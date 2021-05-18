@@ -1,0 +1,59 @@
+.head{
+  background-color: rgb(250,211,71);
+  position: relative;
+  height: 80px;
+  width: 100%;
+  padding: 10px 50px 5px;
+  z-index: 5;
+}
+
+.big{
+  color: brown;
+  font-size: 40px;
+  z-index: 7;
+}
+
+.decorationBar{
+  background-color: rgba(255,255,255,0.4);
+  border-radius: 20px;
+  height: 30%;
+  width: 80%;
+  position: absolute;
+  top: 35px;
+  left: 60px;
+  z-index: 6;
+}
+
+.card{
+  margin-bottom: 10px;
+}
+
+.col{
+  font-size: 20px;
+}
+
+.payCountSum{
+  font-size: 40px;
+  color: rgb(7, 196, 7);
+  float: right;
+  zoom: 1;
+  padding: 5px 0!important;
+
+}
+/* 清除浮动 */
+.payCountSum::after{
+  content: '.';
+  clear: both;
+  height: 0;
+  visibility: hidden;
+  display: block;
+}
+
+.payOut{
+  overflow: hidden;
+  border-bottom: 1px solid rgba(12,12,12,0.3);
+}
+
+.payOut p{
+  margin: 0;
+}

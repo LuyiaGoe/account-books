@@ -1,9 +1,10 @@
 import React from 'react'
 import style from './style.module.css'
 
-export default function Index (props) {
+export default function Index () {
   return (
-    <div className={style.main}>
+    <div>
+      456
     </div>
   )
 }
