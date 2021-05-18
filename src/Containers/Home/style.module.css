@@ -1,0 +1,10 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+.container{
+  display: flex;
+  height: 1366px;
+  border-radius: 15px;
+  overflow: hidden;
+}

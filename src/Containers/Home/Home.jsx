@@ -1,12 +1,12 @@
-// 侧边栏
 import React from 'react'
 import style from './style.module.css'
-import Head from '../Head'
+import Slide from '../Slide/Slide'
 
-export default function index () {
+export default function Index (props) {
+  console.log(props);
   return (
     <div className={style.container}>
-      <Head></Head>
+      <Slide></Slide>
     </div>
   )
 }
