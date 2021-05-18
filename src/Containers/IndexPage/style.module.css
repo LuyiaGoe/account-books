@@ -30,6 +30,8 @@
 
 .col{
   font-size: 20px;
+  font-weight: 550;
+  padding: 5px 30px;
 }
 
 .payCountSum{
@@ -38,7 +40,6 @@
   float: right;
   zoom: 1;
   padding: 5px 0!important;
-
 }
 /* 清除浮动 */
 .payCountSum::after{
@@ -49,11 +50,33 @@
   display: block;
 }
 
+.icon{
+  color: black;
+  font-size: 20px;
+  line-height: 40px;
+  vertical-align: middle;
+  margin-left: 15px;
+}
+
 .payOut{
   overflow: hidden;
   border-bottom: 1px solid rgba(12,12,12,0.3);
 }
 
-.payOut p{
+p{
   margin: 0;
+}
+
+.betweenText{
+  display: flex;
+  justify-content: space-between;
+}
+
+.income{
+  padding: 25px 0 0;
+}
+
+.showProgress{
+  margin-top: 15px;
+  margin-bottom: -15px;
 }

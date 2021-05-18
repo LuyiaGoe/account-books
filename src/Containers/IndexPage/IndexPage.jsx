@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import style from './style.module.css'
-import { Row, Col, Card } from 'antd'
+import { Row, Col, Card, Progress } from 'antd'
 import { connect } from 'react-redux'
+import { RightOutlined } from '@ant-design/icons';
 
 function Index () {
   const [data, setData] = useState()
@@ -36,19 +37,43 @@ function Index () {
 
       {/* 主题区域 */}
       <Card className={style.card}>
+
+        {/* 本月统计卡片 */}
         <Row>
+          {/* 左侧支出收入统计 */}
           <Col span={12} className={style.col}>
             <Col span={24} className={style.payOut}>
               <div>
                 <p>本月支出：</p>
-                <div className={style.payCountSum}><p>￥???</p></div>
+                <div style={{ width: 100 + '%', overflow: 'hidden' }}><p className={style.payCountSum}>￥???<RightOutlined className={style.icon} /></p></div>
               </div>
             </Col>
-            <Col>456</Col>
+            <Col className={style.income}>
+              <div className={style.betweenText}><span>本月收入：</span><span >￥???<RightOutlined className={style.icon} /></span></div>
+              <div className={style.betweenText}><span>预算额度：</span><span >￥???<RightOutlined className={style.icon} /></span></div>
+            </Col>
           </Col>
-          <Col span={12} className={style.col}>col-12</Col>
+
+          {/* 右侧支出前三 */}
+          <Col span={12} className={style.col}>
+            <p>支出分类前3：</p>
+            <div>
+              <p className={style.showProgress}>???</p>
+              <Progress percent={50} showInfo={false} size="small" percent={100} />
+            </div>
+            <div>
+              <p className={style.showProgress}>???</p>
+              <Progress percent={50} showInfo={false} size="small" percent={100} />
+            </div>
+            <div>
+              <p className={style.showProgress}>???</p>
+              <Progress percent={50} showInfo={false} size="small" percent={100} />
+            </div>
+          </Col>
         </Row>
       </Card>
+
+      {/* 按间隔分类统计卡片 */}
       <Card className={style.card}>
         <Row>
           <Col span={12} className={style.col}>col-12</Col>
