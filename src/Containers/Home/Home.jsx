@@ -3,6 +3,7 @@ import { Link, Route, useHistory } from 'react-router-dom'
 import Head from '../Head/Head';
 import IndexPage from '../IndexPage/IndexPage';
 import List from '../List/List';
+import AddACount from '../AddACount/AddACount';
 import style from './style.module.css'
 import { Layout, Menu, Button } from 'antd';
 const { Sider, Content } = Layout;
@@ -11,13 +12,17 @@ export default function Index () {
   // 拿到history
   const [items, setData] = useState('/')
   const history = useHistory()
-  // 副作用钩子
+  // 副作用函数获得location信息
   useEffect(() => {
     // 组件第一次渲染会执行这个方法
     history.listen(historyLocation => {
       setData(historyLocation.pathname)
     })
   }, [history])
+
+  const addACount = () => {
+    history.push('/addACount')
+  }
 
   return (
     <div className={style.container}>
@@ -34,13 +39,14 @@ export default function Index () {
             <Menu.Item key="/list" className={style.font}><Link to='/list'>流水清单</Link></Menu.Item>
             <Menu.Item key="11" className={style.font}>其他功能</Menu.Item>
           </Menu>
-          <Button type='danger' className={style.addButoon}>记一笔</Button>
+          <Button type='danger' className={style.addButoon} onClick={addACount}>记一笔</Button>
         </Sider>
 
         {/* 主页面 */}
         <Content className={style.content}>
           <Route path="/" component={IndexPage} exact />
           <Route path="/list" component={List} />
+          <Route path="/addACount" component={AddACount} />
           {/* <Redirect from='/' to='/home' exact /> */}
         </Content>
       </Layout>

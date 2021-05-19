@@ -1,0 +1,108 @@
+.container{
+  margin: 10px 50px;
+  height: 240px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+}
+.line{
+  width: 100%;
+  border: 1px solid rgb(148, 148, 148);
+  position: absolute;
+  top: 80px;
+  left: 0;
+}
+.line2{
+  width: 100%;
+  border: 1px solid rgb(148, 148, 148);
+  position: absolute;
+  top: 140px;
+  left: 0;
+}
+
+.row{
+}
+
+.col{
+  margin-top: -61px;
+  font-size: 25px;
+  text-align: center;
+  position: relative;
+}
+.col div{
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+
+.middle{
+  top: 123px;
+  height: 50px;
+  width: 100px;
+  perspective: 200px;
+  transform-style: preserve-3d;
+}
+
+.switchDown{
+  position: absolute;
+  bottom  : 0;
+  height: 96px;
+  width: 50%;
+}
+
+.switchTop{
+  position: absolute;
+  top  : 0;
+  height: 80px;
+  width: 50%;
+}
+
+.col div div:nth-child(1){
+  top:5px;
+  transform: rotateX(60deg) translateZ(100px);
+  color: gray;
+}
+
+.col div div:nth-child(2){
+  top:5px;
+  transform: rotateX(30deg) translateZ(100px);
+  color: gray;
+}
+
+.col div div:nth-child(3){
+  top:5px;
+  transform: rotateX(0deg) translateZ(100px);
+  color: gray;
+}
+
+.col div div:nth-child(4){
+  top:5px;
+  transform: rotateX(-30deg) translateZ(100px);
+  color: gray;
+}
+
+.col div div:nth-child(5){
+  top:5px;
+  transform: rotateX(-60deg) translateZ(100px);
+  color: gray;
+}
+
+.animationUp{
+  animation: rotateUp 0.3s linear ;
+}
+
+.animationDown{
+  animation: rotateDown 0.3s linear;
+}
+
+@keyframes rotateUp {
+  0% {transform:rotateX(0)}
+  100% {transform:rotateX(30deg)}
+}
+
+@keyframes rotateDown {
+  0% {transform:rotateX(0)}
+  100% {transform:rotateX(-30deg)}
+}
+

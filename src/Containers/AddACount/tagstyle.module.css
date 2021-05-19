@@ -1,0 +1,28 @@
+.container{
+  display: block;
+  position: absolute;
+  left: 50px;
+  top: 0;
+  width: 80px;
+  cursor: pointer;
+}
+
+.head{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgb(255, 222, 105);
+  box-shadow: 8px 0px 8px rgba(0, 0, 0,0.2);
+  height: 80px;
+}
+
+.icon{
+  margin: auto;
+}
+
+.left{
+  width: 0;
+  border: 40px solid transparent ;
+  border-top: 40px solid rgb(255, 222, 105);
+}

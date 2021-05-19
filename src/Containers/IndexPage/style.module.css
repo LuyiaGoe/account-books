@@ -1,6 +1,7 @@
 .head{
   background-color: rgb(250,211,71);
-  position: relative;
+  position: fixed;
+  top: 0;
   height: 80px;
   width: 100%;
   padding: 10px 50px 5px;
@@ -58,6 +59,11 @@
   margin-left: 15px;
 }
 
+.calendarArray{
+  line-height: 62px;
+  margin-left: 15px;
+}
+
 .payOut{
   overflow: hidden;
   border-bottom: 1px solid rgba(12,12,12,0.3);
@@ -79,4 +85,34 @@ p{
 .showProgress{
   margin-top: 15px;
   margin-bottom: -15px;
+}
+
+.classify{
+  display: flex;
+  justify-content: space-between;
+  font-weight: 200;
+  color: rgb(248,248,248);
+  border-bottom: 1px solid rgb(248,248,248);
+}
+
+.lamination{
+  display: flex;
+  flex-direction: column;
+  color: brown;
+}
+
+.lamination span:nth-child(2){
+  color: rgb(7, 196, 7);
+}
+
+.assetsCard{
+  padding: auto 0!important;
+}
+
+.stickBlock{
+  position: absolute;
+  left:-35px;
+  width: 15px;
+  height: 30px;
+  background-color: red;
 }
