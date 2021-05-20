@@ -1,0 +1,45 @@
+.container{
+  display: block;
+  width: 100%;
+  max-width: 700px;
+  margin: auto;
+}
+
+.display{
+  margin: 20px 24px;
+  height: 100px;
+  width: 100%;
+  max-width: 660px;
+  line-height: 100px;
+  border:1px solid #e6e6e6;
+  font-size: 40px;
+  padding: 0 30px;
+  color: #777e88;
+  font-weight: 600;
+  text-align: right;
+  background-color: #f8f8f8;
+  border-radius: 9px;
+}
+
+.container button{
+  width: 90%;
+  height: 80px;
+  margin: 10px;
+  font-size: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgb(0,0,0,.3);
+  background: linear-gradient(to bottom right,rgb(217,217,217),rgb(161,165,173));
+  border: 1px solid rgb(162,165,168);
+}
+
+.container button:hover,
+.container button:hover,
+.container button:focus{
+  background: rgb(144, 148, 155);
+  border: 1px solid rgb(162,165,168);
+}
+
+.resultBotton{
+  height: 180px!important;
+  background: linear-gradient(to bottom,#f2b452,#d78437)!important;
+}

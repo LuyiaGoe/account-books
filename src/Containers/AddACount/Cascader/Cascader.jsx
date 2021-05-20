@@ -1,19 +1,71 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
-import { Card, Row, Col } from 'antd';
+import { Card, Row, Col, message } from 'antd';
 import style from './style.module.css'
 
 // 添加动画的节流标识
 let addAFlag = true
 
-function Index () {
-  let [state, setState] = useState(['', '', '一', '二', '三', '四', '五', '', ''])
+
+function Index (props) {
+  let [state, setState] = useState({ ...props.obj, 'selectedLeft': 0, 'selectedRight': 0 })
   let rightCol = useRef(null)
   let leftCol = useRef(null)
+  useEffect(() => {
+    let output = []
+    output[0] = arr[state.selectedLeft + 2]
+    output[1] = arrr[state.selectedRight + 2]
+    props.change(output)
+  }, [state.selectedLeft, state.selectedRight])
+  // 用于渲染级联选择器中的选项
+  let all = []
+  let arr = Array(2), arrr = Array(2)
+  for (let i in state) {
+    all.push(i)
+  }
+  arr = [...arr, ...all.slice(0, all.length - 2), ...arr]
+  arrr = [...arrr, ...state[arr[state.selectedLeft + 2]]]
+
+
+  let arra = arr.slice(state.selectedLeft, state.selectedLeft + 5)
+  let arrb = arrr.slice(state.selectedRight, state.selectedRight + 5)
+
+
+  // 随着动画更改级联选择器选中的内容
+  let edit = (chara, ref) => {
+    // 更改目标数组
+    let targetArr = []
+    // 通过ref判断是翻左边的还是右边的
+    if (ref === leftCol) {
+      // 通过chara判断级联选择器是上翻还是下翻
+      for (let i = 0; i < Math.abs(chara); i++) {
+        // 等于0不动
+        if (chara === 0) return
+        setState({ ...state, 'selectedLeft': state.selectedLeft + chara, 'selectedRight': 0 })
+      }
+      targetArr = arr.slice(state.selectedLeft, state.selectedLeft + 5)
+    } else {
+      for (let i = 0; i < Math.abs(chara); i++) {
+        // 等于0不动
+        if (chara === 0) return
+        setState({ ...state, 'selectedRight': state.selectedRight + chara })
+      }
+      targetArr = arrr.slice(state.selectedRight, state.selectedRight + 5)
+    }
+    return (
+      targetArr.map(item => {
+        return <div key={Math.random() * Math.random()}>{item}</div>
+      })
+    )
+  }
+
 
   // 为节点ref添加滚动动作action
   let addAnimation = (ref, action) => {
-    if ((!state[1] && action === style.animationDown) || (!state[3] && action === style.animationUp)) return null
+    if ((!arra[1] && action === style.animationDown && ref === 0) || (!arra[3] && action === style.animationUp && ref === 0) || (!arrb[1] && action === style.animationDown && ref === 1) || (!arrb[3] && action === style.animationUp && ref === 1)) {
+      message.warning('已经到头啦', 0.5)
+      return null
+    }
     let name = ''
     // 级联选择器向下选取选项
     let chara = 1
@@ -34,10 +86,11 @@ function Index () {
       setTimeout(() => {
         if (!ref) {
           leftCol.current.className = name
+          edit(chara, leftCol)
         } else {
           rightCol.current.className = name
+          edit(chara, rightCol)
         }
-        edit(chara)
         addAFlag = true
       }, 280)
     }
@@ -48,43 +101,18 @@ function Index () {
     )
   }
 
-  // 用于渲染级联选择器中的选项
-  let arr = state.slice(0, 5)
 
-  // 随着动画更改级联选择器选中的内容
-  let edit = (chara) => {
-    for (let i = 0; i < Math.abs(chara); i++) {
-      if (chara === 0) return
-      if (chara > 0) {
-        let x = state.shift()
-        setState([...state, x])
-      } else if (chara === -1) {
-        let x = state.pop()
-        setState([x, ...state])
-      }
-    }
-    arr = state.slice(0, 5)
-    return (
-      arr.map(item => {
-        return <div key={Math.random() * Math.random()}>{item}</div>
-      })
-    )
-  }
   return (
     <Card className={style.container} bordered>
       <Row className={style.row}>
         <Col span={12} className={style.col}>
           <div className={style.middle} ref={leftCol}>
-            {edit(0)}
+            {edit(0, leftCol)}
           </div>
         </Col>
         <Col span={12} className={style.col}>
           <div className={style.middle} ref={rightCol}>
-            <div>1</div>
-            <div>1s</div>
-            <div>123</div>
-            <div>1234</div>
-            <div>12345</div>
+            {edit(0, rightCol)}
           </div>
         </Col>
       </Row>

@@ -9,6 +9,7 @@
 .line{
   width: 100%;
   border: 1px solid rgb(148, 148, 148);
+  background-color: rgb(148, 148, 148);
   position: absolute;
   top: 80px;
   left: 0;
@@ -16,6 +17,7 @@
 .line2{
   width: 100%;
   border: 1px solid rgb(148, 148, 148);
+  background-color: rgb(148, 148, 148);
   position: absolute;
   top: 140px;
   left: 0;
@@ -40,7 +42,7 @@
   top: 123px;
   height: 50px;
   width: 100px;
-  perspective: 200px;
+  perspective: 400px;
   transform-style: preserve-3d;
 }
 

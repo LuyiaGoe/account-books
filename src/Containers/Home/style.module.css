@@ -15,18 +15,14 @@
 .side{
   background-color: rgb(248,248,248);
   overflow: hidden;
-  /* box-shadow: 10px 10px 5px #888888; */
-
+  z-index: 32!important;
 }
 
 .content{
   background-color: rgb(248,248,248);
-  box-shadow: 1px 0 5px black;
   border-left:1px solid rgb(237,237,237) ;
-  z-index: 33;
+  z-index: 33!important;
   font-weight: 500;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 .addButoon{
@@ -35,7 +31,11 @@
   left: 25px;
   width: 150px;
   background-color: orange;
-  border:1px solid orange
+  border:1px solid orange;
+  border-radius: 7px;
+  height: 50px;
+  font-size: 22px;
+  line-height: 22px;
 }
 
 .font{
@@ -52,4 +52,14 @@
 .white{
   background-color: #fff!important;
   color: #fff!important;
+}
+/* main区域被推出来 */
+.mainMoveOut{
+  transform: translateX(-80px);
+  transition: all 0.1s linear;
+}
+
+.mainMoveIn{
+  transform: translateX(00px);
+  transition: all 0.1s linear;
 }

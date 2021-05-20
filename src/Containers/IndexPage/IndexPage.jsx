@@ -10,7 +10,7 @@ function Index () {
   // 用来确定当前时间
   const fresh = () => {
     if (!data) {
-      var day2 = new Date();
+      let day2 = new Date();
       day2.setTime(day2.getTime());
       setData({
         time: {
@@ -60,15 +60,15 @@ function Index () {
             <p>支出分类前 3：</p>
             <div>
               <p className={style.showProgress}>???</p>
-              <Progress percent={50} showInfo={false} size="small" percent={100} strokeColor='red' />
+              <Progress percent={50} showInfo={false} size="small" key={Math.random()} percent={100} strokeColor='red' />
             </div>
             <div>
               <p className={style.showProgress}>???</p>
-              <Progress percent={50} showInfo={false} size="small" percent={100} strokeColor='orange' />
+              <Progress percent={50} showInfo={false} size="small" key={Math.random()} percent={100} strokeColor='orange' />
             </div>
             <div>
               <p className={style.showProgress}>???</p>
-              <Progress percent={50} showInfo={false} size="small" percent={100} />
+              <Progress percent={50} showInfo={false} size="small" key={Math.random()} percent={100} />
             </div>
           </Col>
         </Row>
@@ -153,15 +153,15 @@ function Index () {
       </Card>
 
       {/* 资产 */}
-      <Card style={{ position: 'relative' }}>
+      <Card style={{ position: 'relative', overflow: 'hidden' }}>
         {/* 现金账户 */}
         <Row>
           <Col span={24} style={{ borderBottom: '1px solid rgb(248,248,248)', fontSize: '25px', fontWeight: '800', paddingBottom: '15px' }}>&nbsp;&nbsp;&nbsp;&nbsp;资产：￥？？？</Col>
           <Col span={24} className={style.assetsCard}>
             <Col span={24} className={style.classify} style={{ lineHeight: '30px', borderBottom: 0 }}>
               <div className={style.stickBlock}></div>
-              <span>现金账户</span>
-              <span>￥？？？</span>
+              <span style={{ color: 'black' }}>现金账户</span>
+              <span style={{ color: 'black' }}>￥？？？</span>
             </Col>
             {/* 详情 */}
             <Col>
@@ -179,13 +179,13 @@ function Index () {
       </Card>
 
       {/* 虚拟账户 */}
-      <Card style={{ position: 'relative' }}>
+      <Card style={{ position: 'relative', overflow: 'hidden' }}>
         <Row>
           <Col span={24} className={style.assetsCard}>
             <Col span={24} className={style.classify} style={{ lineHeight: '30px', borderBottom: 0 }}>
               <div className={style.stickBlock} style={{ backgroundColor: 'brown' }}></div>
-              <span>虚拟账户</span>
-              <span>￥？？？</span>
+              <span style={{ color: 'black' }}>虚拟账户</span>
+              <span style={{ color: 'black' }}>￥？？？</span>
             </Col>
             {/* 详情 */}
             <Col>
@@ -231,7 +231,7 @@ function Index () {
           </Col>
         </Row>
       </Card>
-    </div>
+    </div >
   )
 }
 

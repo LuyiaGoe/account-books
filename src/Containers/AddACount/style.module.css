@@ -1,11 +1,27 @@
+.container{
+  display: block;
+  box-shadow: -5px 0 15px rgba(0,0,0,.2);
+}
 .head{
   background-color: rgb(250,211,71);
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   height: 80px;
-  width: 80%;
+  /* width: 80%; */
+  position: relative;
   padding: 20px 0;
   z-index: 5;
   text-align: center;
   color: brown;
+}
+
+/* main区域被推出来 */
+.mainMoveOut{
+  transform: translateX(-80px);
+  transition: all 0.1s linear;
+}
+
+.mainMoveIn{
+  transform: translateX(00px);
+  transition: all 0.1s linear;
 }
