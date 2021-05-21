@@ -1,14 +1,24 @@
 .container{
   display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   box-shadow: -5px 0 15px rgba(0,0,0,.2);
+  overflow-x: hidden;
+  transform: translateX(0px);
+}
+.handleHead{
+  transform:  translateX(0) ;
+  height:  100%  ;
 }
 .head{
   background-color: rgb(250,211,71);
-  /* position: fixed; */
+  position: fixed;
   top: 0;
+  width: auto;
   height: 80px;
-  /* width: 80%; */
-  position: relative;
+  left: 0px;
+  right: 0;
   padding: 20px 0;
   z-index: 5;
   text-align: center;
@@ -17,11 +27,11 @@
 
 /* main区域被推出来 */
 .mainMoveOut{
-  transform: translateX(-80px);
-  transition: all 0.1s linear;
+  transform: translateX(-10%);
+  transition: all 0.3s linear;
 }
 
 .mainMoveIn{
-  transform: translateX(00px);
+  transform: translateX(0px);
   transition: all 0.1s linear;
 }

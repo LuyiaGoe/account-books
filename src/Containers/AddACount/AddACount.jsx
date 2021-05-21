@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import style from './style.module.css'
 import Pay from './Pay/Pay';
@@ -18,17 +18,14 @@ function Index () {
   let classn = ''
   useEffect(() => {
     classn = mainRef.current.className
-    console.log('@@@', mainRef);
   }, [])
   // 外推main动画
   const mainOut = () => {
     mainRef.current.className += ` ${style.mainMoveOut}`
-    console.log(mainRef);
   }
   // 推回来main 动画
   const mainIn = () => {
     mainRef.current.className += ` ${style.mainMoveIn}`
-    console.log(mainRef);
     // return
     setTimeout(() => {
       mainRef.current.className = classn
@@ -41,16 +38,15 @@ function Index () {
   }
   return (
     <Provider value={mainAnimation}>
-      <div>
-        <div ref={mainRef} className={style.container}>
-          {/* 头部区域 */}
-          <div className={style.head}>
-            <Tag></Tag>
-
-            <span style={{ fontSize: '25px', fontWeight: 700 }}>记账</span>
-          </div>
+      <div ref={mainRef} className={style.handleHead}>
+        {/* 头部区域 */}
+        <div className={style.head}>
+          <Tag></Tag>
+          <span style={{ fontSize: '25px', fontWeight: 700 }}>记账</span>
+        </div>
+        <div className={style.container}>
           {/* Tabs栏 */}
-          <Tabs defaultActiveKey="1" centered animated>
+          <Tabs defaultActiveKey="1" centered animated style={{ paddingTop: '80px', backgroundColor: 'rgb(248,248,248)' }}>
             <TabPane tab={<span style={{ fontWeight: 400, fontSize: '20px' }}>支出</span>} key="1">
               <Pay pay={true}></Pay>
             </TabPane>

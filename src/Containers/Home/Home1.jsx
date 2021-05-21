@@ -28,11 +28,6 @@ export default function Index () {
     })
   }, [history])
 
-  const onCollapse = collapsed => {
-    console.log(collapsed);
-    setData({ collapsed });
-  };
-
   const toggle = () => {
     setData({
       collapsed: !state.collapsed,

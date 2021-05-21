@@ -3,6 +3,7 @@ import style from './style.module.css'
 import { Row, Col, Card, Progress } from 'antd'
 import { connect } from 'react-redux'
 import { RightOutlined } from '@ant-design/icons';
+import randomNum from 'number-random'
 
 function Index () {
   const [data, setData] = useState()
@@ -28,7 +29,7 @@ function Index () {
   })
 
   return (
-    <div>
+    <div className={style.container}>
       {/* 头部区域 */}
       <div className={style.head}>
         <span className={style.big}>{data ? data.time.month : '0'}</span>
@@ -60,15 +61,15 @@ function Index () {
             <p>支出分类前 3：</p>
             <div>
               <p className={style.showProgress}>???</p>
-              <Progress percent={50} showInfo={false} size="small" key={Math.random()} percent={100} strokeColor='red' />
+              <Progress percent={50} showInfo={false} size="small" key={randomNum(0, 10000000, true)} percent={100} strokeColor='red' />
             </div>
             <div>
               <p className={style.showProgress}>???</p>
-              <Progress percent={50} showInfo={false} size="small" key={Math.random()} percent={100} strokeColor='orange' />
+              <Progress percent={50} showInfo={false} size="small" key={randomNum(0, 10000000, true)} percent={100} strokeColor='orange' />
             </div>
             <div>
               <p className={style.showProgress}>???</p>
-              <Progress percent={50} showInfo={false} size="small" key={Math.random()} percent={100} />
+              <Progress percent={50} showInfo={false} size="small" key={randomNum(0, 10000000, true)} percent={100} />
             </div>
           </Col>
         </Row>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import style from './style.module.css'
 import Cascader from '../Cascader/Cascader';
 import Calculator from '../../Calculator';
-import { Collapse, Calendar, Button, Drawer } from 'antd';
+import { Collapse, Calendar, Button, Drawer, notification } from 'antd';
 import globalContext from '../../../globalContext';
 
 const { Panel } = Collapse;
@@ -55,27 +55,36 @@ let initialState = {
 
 function Index (props) {
   let Consumer = useContext(globalContext)
-  console.log(Consumer);
   let [state, setState] = useState(initialState)
+  // 传送数据用的对象：
+  let info = {
+    count: 0,
+    category: '',
+    account: '',
+    date: '',
+    member: '',
+    remark: ''
+  }
   useEffect(() => {
   }, [])
   // 接收到级联传来的支出分类
   const receivePayCat = (data) => {
-    let str = `${data[0]} > ${data[1]}`
-    setState({ ...state, receivePayCat: str })
+    info.category = `${data[0]} > ${data[1]}`
+    setState({ ...state, receivePayCat: info.category })
   }
   // 接收到级联传来的账户分类
   const receiveAccountCat = (data) => {
-    let str = `${data[1]}`
-    setState({ ...state, receiveAccountCat: str })
+    info.account = `${data[1]}`
+    setState({ ...state, receiveAccountCat: info.account })
   }
   // 接收到级联传来的成员分类
   const receiveNumberCat = (data) => {
-    let str = `${data[1]}`
-    setState({ ...state, receiveNumberCat: str })
+    info.member = `${data[1]}`
+    setState({ ...state, receiveNumberCat: info.member })
   }
   // 接收到日历的日期
   const onPanelChange = (data) => {
+    info.date = data._d
     setState({ ...state, dateStr: data._d })
   }
   // 分类标签、属性及级联选择器
@@ -100,7 +109,7 @@ function Index (props) {
 
   // 日期
   const date = () => {
-    let str = `${state.dateStr.getFullYear()}年${state.dateStr.getMonth() + 1}月${state.dateStr.getDate()}日`
+    let str = `${state.dateStr.getFullYear()}年 ${state.dateStr.getMonth() + 1}月 ${state.dateStr.getDate()}日`
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h1 style={{ margin: ' 0px', padding: '0px 50px', color: 'gray' }}>日期</h1>
@@ -118,15 +127,42 @@ function Index (props) {
     )
   }
   // 键入事件
-  let remarkValue = ''
   let inputRef = useRef(null)
   const keyDown = (e) => {
-    console.log(inputRef.current.value);
-    inputRef.current.value = e.target.value
-    e.target.value = inputRef.current.value
-    if (e.keyCode === 13) {
-      return conserve()
+    if (e.target.id === 'input' && e.keyCode === 13) {
+      conserve(2)
     }
+  }
+  // 模板名称键入事件
+  let tempInputRef = useRef(null)
+  const tempKeyDown = (e) => {
+    if (e.keyCode === 13) { conserveTemp() }
+  }
+  // 保存模板
+  const conserveTemp = () => {
+    const deepClone = (obj) => {    // 简易深拷贝函数
+      if (typeof obj !== 'object' || obj === null) {
+        return obj
+      }
+      if (Array.isArray(obj)) {
+        var result = []
+      } else {
+        var result = {}
+      }
+      for (let key in obj) {
+        result[key] = deepClone(obj[key])
+      }
+      return result
+    }
+    conserve(1)
+    if (!tempInputRef.current.value) {
+      notification['error']({
+        message: '请填写模板名称'
+      });
+      return null
+    }
+    let cloneObj = deepClone(info)  // 拷贝info
+    cloneObj.tempName = tempInputRef.current.value
   }
   // 下拉区域
   const collapseList = () => {
@@ -146,21 +182,44 @@ function Index (props) {
         <Panel header={number()} key={'numbercat'} showArrow={false} style={{ padding: '12px 00px' }}>
           <Cascader obj={numberCat} change={receiveNumberCat}></Cascader>
         </Panel>
-        <div style={{ width: '100%', borderBottom: '1px solid rgb(217,217,217)', padding: '1px' }}>
-          <input className={style.remark} onKeyDown={keyDown} ref={inputRef} placeholder='备注...' type="text" />
-        </div>
+
       </Collapse>
     )
   }
   // 保存
-  const conserve = () => {
-    console.log('conserve');
-    console.log('resule', remarkValue);
+  const conserve = (s) => {
+    if (!verification()) {
+      return null
+    }
+    info.count = state.count
+    info.category = state.receivePayCat
+    info.account = state.receiveAccountCat
+    info.date = state.dateStr.getTime()
+    info.member = state.receiveNumberCat
+    info.remark = inputRef.current.value
+    if (s.toString() === '[object Object]' || s === 2) {
+      console.log('发送');
+    }
   }
   // 保存为模板
   const conserveAsTemp = () => {
     setState({ ...state, tempVisible: true })
     Consumer.mainOut()
+  }
+  // 验证填单
+  const verification = () => {
+    if (state.receivePayCat === '请选择分类') {
+      notification['error']({
+        message: '请选择分类'
+      })
+      return false
+    } else if (state.receiveAccountCat === '请选择账户') {
+      notification['error']({
+        message: '请选择账户'
+      })
+      return false
+    }
+    return true
   }
   // 关闭抽屉
   const onClose = () => {
@@ -193,7 +252,10 @@ function Index (props) {
     setState({ ...state, calcuVisible: false })
     Consumer.mainIn()
   }
-
+  // 计算器传出值
+  const outPut = (value) => {
+    setState({ ...state, count: value })
+  }
   return (
     <div className={style.container}>
       <div style={{ borderBottom: '1px solid rgb(248,248,248)', overflow: 'hidden', backgroundColor: 'rgb(248,248,248)' }} onClick={openCalcu}>
@@ -201,8 +263,13 @@ function Index (props) {
       </div>
       {/* 下拉菜单区域 */}
       {collapseList()}
-      <Button type='danger' className={style.conserveButoon} onClick={conserve}>保存</Button>
-      <Button type='danger' className={style.conserveAsTempButoon} onClick={conserveAsTemp}>保存为模板</Button>
+      <div style={{ width: '100%', borderBottom: '1px solid rgb(217,217,217)', padding: '1px' }}>
+        <input className={style.remark} onKeyDown={keyDown} ref={inputRef} placeholder='备注...' type="text" id='input' />
+      </div>
+      <div className={style.bottonContainer}>
+        <Button type='danger' className={style.conserveButoon} onClick={conserve}>保存</Button>
+        <Button type='danger' className={style.conserveAsTempButoon} onClick={conserveAsTemp}>保存为模板</Button>
+      </div>
       {/* 模板抽屉区域 */}
       <Drawer
         title={title()}
@@ -216,10 +283,10 @@ function Index (props) {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <h1 style={{ paddingLeft: '60px', paddingTop: '25px', color: 'gray' }}>模板名称</h1>
-          <input className={style.remark} onKeyDown={keyDown} style={{ textAlign: 'right', marginRight: '20px' }} placeholder='请输入模板名' type="text" />
+          <input className={style.remark} ref={tempInputRef} onKeyDown={tempKeyDown} style={{ textAlign: 'right', marginRight: '20px' }} placeholder='请输入模板名' type="text" />
         </div>
         {collapseList()}
-        <Button type='danger' className={style.drawerButoon} onClick={conserve}>保存</Button>
+        <Button type='danger' className={style.drawerButoon} onClick={conserveTemp}>保存</Button>
       </Drawer>
       <Drawer
         title={title()}
@@ -231,7 +298,7 @@ function Index (props) {
         headerStyle={{ margin: 0, padding: 0 }}
         className={style.drawerBody}
       >
-        <Calculator calcu={state.count}></Calculator>
+        <Calculator initialNum={state.count} closeCalcu={closeCalcu} outPut={outPut}></Calculator>
       </Drawer>
 
     </div>

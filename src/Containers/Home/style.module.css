@@ -6,10 +6,11 @@
 .container{
   font-size: 20px;
   display: flex;
-  height: 1366px;
+  height: 100%;
+  width: 100%;
   border-radius: 15px;
-  overflow: hidden;
-  position: relative;
+  overflow: auto;
+  position: absolute;
 }
 
 .side{
@@ -19,10 +20,17 @@
 }
 
 .content{
+  position: absolute;
+  height: 100%;
+  width: auto!important;
+  margin-left: 200px;
+  left: 0;
+  right: 0;
   background-color: rgb(248,248,248);
   border-left:1px solid rgb(237,237,237) ;
   z-index: 33!important;
   font-weight: 500;
+  /* overflow: auto; */
 }
 
 .addButoon{
