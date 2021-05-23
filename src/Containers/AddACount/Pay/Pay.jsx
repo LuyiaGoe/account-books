@@ -5,6 +5,8 @@ import Cascader from '../Cascader/Cascader';
 import Calculator from '../../Calculator';
 import { Collapse, Calendar, Button, Drawer, notification } from 'antd';
 import globalContext from '../../../globalContext';
+// 这是 redux 的 action，此处依序引入的是：保存当前账单、作为模板保存
+import { saveCount, saveAsTemp } from '../../../redux/actions/saveCount';
 
 const { Panel } = Collapse;
 
@@ -58,6 +60,7 @@ function Index (props) {
   let [state, setState] = useState(initialState)
   // 传送数据用的对象：
   let info = {
+    id: 0,
     count: 0,
     category: '',
     account: '',
@@ -163,6 +166,8 @@ function Index (props) {
     }
     let cloneObj = deepClone(info)  // 拷贝info
     cloneObj.tempName = tempInputRef.current.value
+    props.saveAsTemp(cloneObj)
+    onClose()
   }
   // 下拉区域
   const collapseList = () => {
@@ -191,14 +196,17 @@ function Index (props) {
     if (!verification()) {
       return null
     }
+    info.id = (new Date()).getTime()
     info.count = state.count
     info.category = state.receivePayCat
     info.account = state.receiveAccountCat
     info.date = state.dateStr.getTime()
     info.member = state.receiveNumberCat
     info.remark = inputRef.current.value
+    info.pay = props.pay
     if (s.toString() === '[object Object]' || s === 2) {
-      console.log('发送');
+      props.saveCount(info)
+      // setState(initialState)
     }
   }
   // 保存为模板
@@ -305,4 +313,8 @@ function Index (props) {
   )
 }
 export default connect(
+  state => ({
+
+  }),
+  { saveCount, saveAsTemp }
 )(Index)

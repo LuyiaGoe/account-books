@@ -3,10 +3,11 @@
 ## 准备工作
 1. 准备UI界面
 2. 准备项目搭建，项目用到：
-  + react
-  + react-redux
-  + react-router
-  + Ant-design
+  + `react`
+  + `react-redux`
+  + `react-router`
+  + `Ant-design`
+  + 其他小插件，如随机数插件`number-random`、部署项目插件`gh-pages`
 
 ## 级联组件的制作封装
 > 考虑做一个类似数字密码锁样式的滚筒UI，做法如下：
@@ -50,21 +51,46 @@
     + 点击`C + - =`
   + 因为开启了严格模式，这个组件也是通过eval形式进行运算的，所以**要防止0开头的数字被认为是八进制**，从而报错，所以要在每一个运算数字输入前对`0`的输入进行控制
   + `OK`不仅承担了关闭计算器的功能，还需要向父组件传值
+
 ## 传值记录
 1. `useContext`传值：
-  + 单纯用于传值，不用`action reducer`修改的值
+  + 单纯用于传值和传递动画函数（Pay页面和IndexPage页面），不用`action reducer`修改的值
   + 设置了全局context，在`src`中生成了一个`globalContext`文件
   + 
+2. `redux`传值：
+  + 用于查询、保存、修改用
+
 ## 思考
 1. 项目色调为橘色和暗黄色
 2. 风格偏向于卡片化+横条化，记账清晰明了，这样也有利于组件封装与复用的实现
 3. 记账的数据应进行分类，考虑有：
-  + 按时间分类，属性为`time`
-  + 按收入支出分类，属性为`to/from`
-  + 按账户分类，属性为`account`
-  + 日期分类，属性为`date`
-
+  + 收入支出分类，属性为`pay: true(支出)/false(收入)`，**必需属性**
+  + 账户分类，属性为`account: String`，**必需属性**
+  + 日期分类，属性为`date: Number`，**必需属性**
+  + id分类，属性为`id: Number`，用于查具体某一单，**必需属性**
+  + 项目分类，属性为`category: ['一级选择器','二级选择器']`，**必需属性**
+  + 金额分类，属性为`count: Number`，**必需属性**
+  + 备注，属性为`remark: String`
+  + 成员，属性为`member: String`
+4. 根据分类，在查询时应做提交相应查询条件对象，每个分类的键值对结构应为：
+  + 收入支出分类`pay:Boolean`
+  + 账户分类`account: String`
+  + 日期分类`date:[Number,Number]`
+  + id分类`id:Number`
+  + 项目分类`category:['一级选择器'[,'二级选择器']]`
+  + 金额分类`count: [Number,Number]`
+  + 成员`member:String`
+5. 发起查询动作时，一并要提供一个查询对象，其中包含两个值，一是查询范围`list(component可以提供String、Array类型数据，但在reducer逻辑中时，数据结构为Array)`，一是查询条件`demand(从始至终数据结构为Object)`
+6. reducer接收到action时，会根据条件的键值对中，值的数据类型进行分类查询：
+  + 比如`category count date`是引用数据类型，其他的是基本数据类型
+  + 基本数据类型要求是精准匹配，匹配逻辑是一样的，所以不用做区分，符合`demand[key]=list[key]`就通过
+  + 数组结构的条件，是范围查询用的，当两端取值一样时，便成了精准查值了
+  + 数组结构中也分两类，一类是`category`可以查一级选择器或查到二级选择器，一类是`date count`用于范围查找的，尤其是date，基本不能查到具体时间点的账单
+  + > 综上，按照查询条件中的数据结构，将查询逻辑分三类:精准查找`pay id member account`、分级查找`category`、范围查找`date count`
+7. `list`查询范围可以根据传入的信息，找出相关范围的数组交给reducer按demand进行查找
+  + `list`的值可以为`all today week month`关键字，分别是以`所有 今天 这周 这月`的账单为范围
+  + 也可以传入一个带着date数据的数组，以数组中时间内的账单为范围
 ## 问题记录
 1. 在antd的card组件中设置一个浮动组件，会出现被外面的组件占掉位置的情况
   + 推测是提供的组件没有触发BFC，通过给card组件设置overflow:hidden解决问题
-2. key值的设置不能为random
+2. key值的设置不能为`Math.random()`，引入随机数小插件解决问题

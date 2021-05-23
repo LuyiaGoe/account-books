@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Row, Col } from 'antd';
 import style from './style.module.css'
+import randomNum from 'number-random'
 
 class index extends Component {
   constructor(props) {
@@ -39,7 +40,6 @@ class index extends Component {
     pointFlag: false
   }
   getResult = () => {
-    console.log('calcu', this.calculator);
     this.arrHead = this.calculator[0] // 获取计算器数组第一个元素，用于判断是否头部为运算符
     let copyArr = this.calculator
     if (this.arrHead === '-' || this.arrHead === '+') { // 判断头部是否为运算符
@@ -158,7 +158,7 @@ class index extends Component {
             {
               this.numberArr.map((item) => {
                 return (
-                  <Col span={24} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} key={Math.random()}>
+                  <Col span={24} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} key={randomNum(0, 10, true)}>
                     <Button type='primary'>{item}</Button><Button type='primary'>{item + 1}</Button><Button type='primary'>{item + 2}</Button>
                   </Col>
                 )

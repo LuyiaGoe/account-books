@@ -4,11 +4,12 @@ import { Row, Col, Card, Progress } from 'antd'
 import { connect } from 'react-redux'
 import { RightOutlined } from '@ant-design/icons';
 import randomNum from 'number-random'
+import { getCountData } from '../../redux/actions/countData';
+import { getOFS } from '../../redux/actions/oFS';
 
-function Index () {
+function Index (props) {
   const [data, setData] = useState()
-
-  // 用来确定当前时间
+  // 用来确定当前时间以及获取redux传来的countData
   const fresh = () => {
     if (!data) {
       let day2 = new Date();
@@ -21,12 +22,15 @@ function Index () {
         }
       })
     }
+    let list = props.getCountData({ list: 'all', demand: {} })
+    list = props.getOFS(list)
+    console.log(list);
   }
 
   // 用副作用函数更替时间
   useEffect(() => {
     fresh()
-  })
+  }, [data])
 
   return (
     <div className={style.container}>
@@ -237,5 +241,11 @@ function Index () {
 }
 
 export default connect(
-
+  state => (
+    {
+      countData: state.countData,
+      ofs: state.oFS
+    }
+  ),
+  { getCountData, getOFS }
 )(Index)

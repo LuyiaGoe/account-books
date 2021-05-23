@@ -1,11 +1,9 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 
-import numberChange from './reducer'
-
+//引入redux-thunk，用于支持异步action
 import thunk from 'redux-thunk'
+//引入汇总之后的reducer
+import reducer from './reducers'
 
-const allReducer = combineReducers({
-  count1: numberChange
-})
 
-export default createStore(allReducer, applyMiddleware(thunk))
+export default createStore(reducer, applyMiddleware(thunk))

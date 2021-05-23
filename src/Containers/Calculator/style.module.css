@@ -45,6 +45,8 @@
 }
 
 .resultBotton{
-  height: 179px!important;
+  height: 180px!important;
+  position: absolute ;
+  top: 200px;
   background: linear-gradient(to bottom,#f2b452,#d78437)!important;
 }
