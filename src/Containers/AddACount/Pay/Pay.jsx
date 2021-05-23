@@ -290,7 +290,7 @@ function Index (props) {
         className={style.drawerBody}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h1 style={{ paddingLeft: '60px', paddingTop: '25px', color: 'gray' }}>模板名称</h1>
+          <h1 style={{ paddingLeft: '60px', paddingTop: '25px', color: 'gray', whiteSpace: 'nowrap' }}>模板名称</h1>
           <input className={style.remark} ref={tempInputRef} onKeyDown={tempKeyDown} style={{ textAlign: 'right', marginRight: '20px' }} placeholder='请输入模板名' type="text" />
         </div>
         {collapseList()}

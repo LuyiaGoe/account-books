@@ -81,7 +81,7 @@
   + 金额分类`count: [Number,Number]`
   + 成员`member:String`
 5. 发起查询动作时，一并要提供一个查询对象，其中包含两个值，一是查询范围`list(component可以提供String、Array类型数据，但在reducer逻辑中时，数据结构为Array)`，一是查询条件`demand(从始至终数据结构为Object)`
-6. reducer接收到action时，会根据条件的键值对中，值的数据类型进行分类查询：
+6. 查询reducer接收到action时，会根据条件的键值对中，值的数据类型进行分类查询：
   + 比如`category count date`是引用数据类型，其他的是基本数据类型
   + 基本数据类型要求是精准匹配，匹配逻辑是一样的，所以不用做区分，符合`demand[key]=list[key]`就通过
   + 数组结构的条件，是范围查询用的，当两端取值一样时，便成了精准查值了
@@ -90,6 +90,10 @@
 7. `list`查询范围可以根据传入的信息，找出相关范围的数组交给reducer按demand进行查找
   + `list`的值可以为`all today week month`关键字，分别是以`所有 今天 这周 这月`的账单为范围
   + 也可以传入一个带着date数据的数组，以数组中时间内的账单为范围
+8. 排名reducer需求数据同上，接收到需要排名的`list demand`,返回一个符合需求的数组，数组符合`demand`要求
+  + `demand`中自带一个`order`属性，为空或者为`false`默认为降序
+  + 如果出现多个数据同级，则再按照时间顺序，从近到远排序
+
 ## 问题记录
 1. 在antd的card组件中设置一个浮动组件，会出现被外面的组件占掉位置的情况
   + 推测是提供的组件没有触发BFC，通过给card组件设置overflow:hidden解决问题

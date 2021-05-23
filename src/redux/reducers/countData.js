@@ -1,12 +1,12 @@
 import { GETCOUNTDATA } from '../constant'
 
-const initState = {
+const initState = [{
   count: 0,
   category: ['暂无数据'],
   date: 0,
   account: '暂无数据',
   pay: true
-}
+}]
 let allCount = JSON.parse(localStorage.getItem('allCount')) || [initState] // 获取所有账单数据
 /* if (JSON.parse(localStorage.getItem('allCount'))) { 
   allCount = JSON.parse(localStorage.getItem('allCount'))
@@ -40,7 +40,6 @@ const on_demand = (list, demand) => {
       })
     }, list)
   }
-  return []
 }
 
 // 判断state中的list，并返回相应的list数组
@@ -92,5 +91,5 @@ export default function countDate (preState = initState, action) {
     case GETCOUNTDATA:
       return [...on_demand(distList(data.list), data.demand)]
   }
-  return null
+  return preState
 }

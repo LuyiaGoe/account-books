@@ -22,8 +22,6 @@ const on_demand = (list, demand) => {
               if (demand[cur][0] <= item[cur] && item[cur] <= demand[cur][1]) return item
             } else { // category 查询逻辑区域
               if (demand[cur][1]) {
-                console.log(2222222);
-                console.log(demand[cur]);
                 return item[cur].indexOf(demand[cur][1]) !== -1
               } else {
                 return item[cur].indexOf(demand[cur][0]) !== -1
@@ -74,6 +72,10 @@ const distList = (item) => {
       let thisMonthDays = timeStr(nowMsec).day
       condition.date = targetMsec(nowMsec, thisMonthDays)
       return on_demand(allCount, condition)
+    case 'year':
+      let thisYear = timeStr(nowMsec).year
+      condition.date = targetMsec(nowMsec, thisYear)
+      return on_demand(allCount, condition)
   }
 }
 // 收支计算
@@ -108,6 +110,8 @@ export default function handle (dat) {
   ofs.weekArr = distList('week')
   // 本月列表
   ofs.monthArr = distList('month')
+  // 本年列表
+  ofs.yearArr = distList('year')
   // 现金列表
   ofs.cashArr = on_demand(allCount, { account: '现金' })
   // 银行卡列表
@@ -124,6 +128,8 @@ export default function handle (dat) {
   ofs.weekRevenue = revenue(ofs.weekArr)
   // 本月收支
   ofs.monthRevenue = revenue(ofs.monthArr)
+  // 今年收支
+  ofs.yearRevenue = revenue(ofs.yearArr)
   // 现金收支
   ofs.cashRevenue = revenue(ofs.cashArr)
   // 银行卡收支
@@ -145,12 +151,8 @@ export default function handle (dat) {
   // 微信资产
   ofs.weChatAsset = calcuAsset('weChat')
   // 资产
-  ofs.sumAsset = 0
-  for (let key in ofs) {
-    if (key.indexOf('Asset') >= 0) {
-      ofs.sumAsset += ofs[key]
-    }
-  }
-  console.log('ofs', ofs);
-  return data
+  ofs.sumAsset = ofs.cashAsset + ofs.creditAsset + ofs.bushCardAsset + ofs.aliPayAsset + ofs.weChatAsset
+  // 虚拟资产
+  ofs.virtualAsset = ofs.sumAsset - ofs.cashAsset
+  return ofs
 }

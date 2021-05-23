@@ -33,5 +33,5 @@ export default function saveCountReducer (preState = initState, action) {
       }
       break;
   }
-  return null
+  return preState
 }

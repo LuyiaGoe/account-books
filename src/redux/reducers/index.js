@@ -6,12 +6,16 @@ import { combineReducers } from 'redux'
 // 引入为存储账单、更改账单服务的reducer
 import saveCount from './saveCount'
 import countData from './countData'
-import oFS from './oFS'
+import ofs from './oFS'
+import numFor from './numberFomat'
+import getRank from './rank'
 
 
 //汇总所有的reducer变为一个总的reducer
 export default combineReducers({
   saveCount,
   countData,
-  oFS
+  ofs,
+  numFor,
+  getRank
 })
