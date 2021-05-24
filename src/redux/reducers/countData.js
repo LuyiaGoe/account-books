@@ -8,11 +8,6 @@ const initState = [{
   pay: true
 }]
 let allCount = JSON.parse(localStorage.getItem('allCount')) || [initState] // 获取所有账单数据
-/* if (JSON.parse(localStorage.getItem('allCount'))) { 
-  allCount = JSON.parse(localStorage.getItem('allCount'))
-} else {
-  allCount = [initState]
-} */
 
 // 按需获取数据
 const on_demand = (list, demand) => {

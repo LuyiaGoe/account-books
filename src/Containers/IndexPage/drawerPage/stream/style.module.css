@@ -1,0 +1,37 @@
+.container{
+  display: flex;
+  /* height: 100%; */
+  position: absolute;
+  width: 100%;
+  flex-direction: column;
+  overflow: auto;
+}
+.head{
+  margin-top: 20px;
+  height: 100px;
+  width: 100%;
+  background-color: #dfe0e1;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  padding : 20px 40px 0;
+}
+.count{
+  display: flex;
+  flex-direction: column;
+}
+.count span {
+  font-weight: 600;
+  font-size: 20px;
+}
+.count div{
+  font-size: 15px;
+  color: #646a75;
+  width: 100%;
+}
+.stream{
+  height: 100%;
+  width: 100%;
+  margin-top: 120px;
+  background-color: #fff;
+}

@@ -1,5 +1,6 @@
 .container{
-  overflow: auto;
+  overflow: hidden;
+  overflow-x: hidden;
   box-shadow: -5px 0 15px rgb(0 0 0 / 20%);
 }
 .head{
@@ -120,4 +121,13 @@ p{
   width: 15px;
   height: 30px;
   background-color: red;
+}
+
+.drawerBody{
+  margin: 0;
+  padding: 0;
+}
+
+a{
+  color:black;
 }

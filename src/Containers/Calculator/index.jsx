@@ -2,6 +2,17 @@ import React, { Component } from 'react';
 import { Button, Row, Col } from 'antd';
 import style from './style.module.css'
 import randomNum from 'number-random'
+// 格式化数字
+Number.prototype.numberFormat = function (c, d, t) {
+  var n = this,
+    c = isNaN(c = Math.abs(c)) ? 2 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
 
 class index extends Component {
   constructor(props) {
@@ -12,7 +23,7 @@ class index extends Component {
     // 计算时显示正在手打的数值
     this.section = ''
     // 计算并输出值
-    this.result = this.props.initialNum
+    this.result = this.props.initialNum || 0
     // 数位
     this.order = 0
     // 计算器数组头部
@@ -26,7 +37,9 @@ class index extends Component {
   }
   // 向父组件传值
   outPut = () => {
-    this.props.outPut(this.result)
+    if (this.props.outPut) {
+      this.props.outPut(this.result)
+    }
     if (this.result.toString().indexOf('.') !== -1) {  // 查看结果是否有小数点
       this.pointFlag = true  // 有就禁用下一次的小数点
     }
@@ -72,7 +85,7 @@ class index extends Component {
         this.result = this.state.display
         this.outPut()
         setTimeout(() => { //疑似一个bug，同步任务将不会更新父组件的金额，异步任务才行
-          this.props.closeCalcu()
+          if (this.props.closeCalcu) this.props.closeCalcu()
         }, 0)
         break;
       case '=':   // 计算值，并将扳手归零
@@ -149,7 +162,7 @@ class index extends Component {
   render () {
     return (
       <div className={style.container} onClick={this.getValue} >
-        <div className={style.display}>{this.state.display}</div>
+        <div className={style.display}>{(this.state.display * 1).numberFormat(2)}</div>
         <Row style={{ margin: 'auto 20px' }}>
           <Col span={18} style={{ display: 'flex', flexDirection: 'column-reverse' }}>
             <Col span={24} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>

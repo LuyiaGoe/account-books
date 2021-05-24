@@ -62,11 +62,14 @@ const calcuAsset = (ofs, cate) => {
 }
 
 export default function getOFS (pre = [null], action) {
+  // 存放分完类的信息
   let ofs = {}
   const { type, data } = action
   // 支出列表
   if (type === OFS) {
+    // list是要被分类的目标
     let list = data || []
+    // 支出分类
     ofs.payArr = list.filter(item => {
       return item['pay']
     })

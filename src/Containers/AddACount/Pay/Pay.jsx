@@ -40,20 +40,17 @@ let numberCat = {
   '家人': ['本人', '老公', '老婆', '子女', '父母', '家庭公用'],
   '其他': ['亲戚', '朋友', '同学', '同事', '其他']
 }
-let day2 = new Date();
-day2.setTime(day2.getTime())
 
 // 初始值
 let initialState = {
-  receivePayCat: '请选择分类',
-  receiveAccountCat: '请选择账户',
-  dateStr: day2,
-  receiveNumberCat: '(无成员)',
+  category: '请选择分类',
+  account: '请选择账户',
+  date: new Date().getTime(),
+  member: '(无成员)',
   tempVisible: false,
   calcuVisible: false,
   count: 0
 }
-
 
 function Index (props) {
   let Consumer = useContext(globalContext)
@@ -69,33 +66,36 @@ function Index (props) {
     remark: ''
   }
   useEffect(() => {
-  }, [])
+    if (props.count && props.count[0].id) {
+      setState({ ...props.count[0] })
+    }
+  }, [props])
   // 接收到级联传来的支出分类
   const receivePayCat = (data) => {
     info.category = `${data[0]} > ${data[1]}`
-    setState({ ...state, receivePayCat: info.category })
+    setState({ ...state, category: info.category })
   }
   // 接收到级联传来的账户分类
   const receiveAccountCat = (data) => {
     info.account = `${data[1]}`
-    setState({ ...state, receiveAccountCat: info.account })
+    setState({ ...state, account: info.account })
   }
   // 接收到级联传来的成员分类
   const receiveNumberCat = (data) => {
     info.member = `${data[1]}`
-    setState({ ...state, receiveNumberCat: info.member })
+    setState({ ...state, member: info.member })
   }
   // 接收到日历的日期
   const onPanelChange = (data) => {
     info.date = data._d
-    setState({ ...state, dateStr: data._d })
+    setState({ ...state, data: data._d })
   }
   // 分类标签、属性及级联选择器
   const classification = () => {
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h1 style={{ margin: ' 0px', padding: '0px 50px', color: 'gray' }}>分类</h1>
-        <span style={{ fontSize: '20px' }}>{state.receivePayCat}</span>
+        <span style={{ fontSize: '20px' }}>{state.category}</span>
       </div>
     )
   }
@@ -105,14 +105,14 @@ function Index (props) {
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h1 style={{ margin: ' 0px', padding: '0px 50px', color: 'gray' }}>账户</h1>
-        <span style={{ fontSize: '20px' }}>{state.receiveAccountCat}</span>
+        <span style={{ fontSize: '20px' }}>{state.account}</span>
       </div>
     )
   }
 
   // 日期
   const date = () => {
-    let str = `${state.dateStr.getFullYear()}年 ${state.dateStr.getMonth() + 1}月 ${state.dateStr.getDate()}日`
+    let str = `${new Date(state.date).getFullYear()}年 ${new Date(state.date).getMonth() + 1}月 ${new Date(state.date).getDate()}日`
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h1 style={{ margin: ' 0px', padding: '0px 50px', color: 'gray' }}>日期</h1>
@@ -125,7 +125,7 @@ function Index (props) {
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h1 style={{ margin: ' 0px', padding: '0px 50px', color: 'gray' }}>成员</h1>
-        <span style={{ fontSize: '20px' }}>{state.receiveNumberCat}</span>
+        <span style={{ fontSize: '20px' }}>{state.member}</span>
       </div>
     )
   }
@@ -198,10 +198,10 @@ function Index (props) {
     }
     info.id = (new Date()).getTime()
     info.count = state.count
-    info.category = state.receivePayCat
-    info.account = state.receiveAccountCat
-    info.date = state.dateStr.getTime()
-    info.member = state.receiveNumberCat
+    info.category = state.category
+    info.account = state.account
+    info.date = new Date(state.date).getTime()
+    info.member = state.member
     info.remark = inputRef.current.value
     info.pay = props.pay
     if (s.toString() === '[object Object]' || s === 2) {
@@ -216,12 +216,12 @@ function Index (props) {
   }
   // 验证填单
   const verification = () => {
-    if (state.receivePayCat === '请选择分类') {
+    if (state.category === '请选择分类') {
       notification['error']({
         message: '请选择分类'
       })
       return false
-    } else if (state.receiveAccountCat === '请选择账户') {
+    } else if (state.account === '请选择账户') {
       notification['error']({
         message: '请选择账户'
       })
@@ -266,7 +266,7 @@ function Index (props) {
   }
   return (
     <div className={style.container}>
-      <div style={{ borderBottom: '1px solid rgb(248,248,248)', overflow: 'hidden', backgroundColor: 'rgb(248,248,248)' }} onClick={openCalcu}>
+      <div style={{ borderBottom: '1px solid rgb(248,248,248)', overflow: 'hidden', backgroundColor: 'rgb(248,248,248)', cursor: 'pointer' }} onClick={openCalcu}>
         <span className={style.count} style={{ color: props.pay ? 'green' : 'red' }}>￥{state.count}</span>
       </div>
       {/* 下拉菜单区域 */}
@@ -276,7 +276,7 @@ function Index (props) {
       </div>
       <div className={style.bottonContainer}>
         <Button type='danger' className={style.conserveButoon} onClick={conserve}>保存</Button>
-        <Button type='danger' className={style.conserveAsTempButoon} onClick={conserveAsTemp}>保存为模板</Button>
+        <Button type='danger' className={style.conserveAsTempButoon} style={{ display: state.id ? 'none' : 'block' }} onClick={conserveAsTemp}>保存为模板</Button>
       </div>
       {/* 模板抽屉区域 */}
       <Drawer

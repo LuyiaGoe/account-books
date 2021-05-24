@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import globalContext from '../../globalContext'
-import { Redirect, Switch } from 'react-router-dom';
-import { Link, Route, useHistory } from 'react-router-dom'
+import { Redirect, Switch, Link, Route, useHistory } from 'react-router-dom';
 import Head from '../Head/Head';
 import IndexPage from '../IndexPage/IndexPage';
 import List from '../List/List';
@@ -68,7 +67,7 @@ function Index () {
           <Content className={style.content} ref={mainRef}>
             {/* 头部区域 */}
             <Switch>
-              <Route path="/home" component={IndexPage} exact />
+              <Route path="/home" component={IndexPage} />
               <Route path="/list" component={List} />
               <Route path="/addACount" component={AddACount} />
               <Redirect to='/home' />
