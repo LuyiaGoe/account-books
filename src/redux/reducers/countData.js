@@ -20,7 +20,9 @@ const on_demand = (list, demand) => {
         switch (typeof demand[cur]) { // 条件键值对的值demand[cur]，可以区分为两类
           case 'object': // 引用数据类型 这一类下也有两个子类
             if (typeof demand[cur][0] === 'number') { // count date 查询逻辑区域
-              if (demand[cur][0] <= item[cur] && item[cur] <= demand[cur][1]) return item
+              if (demand[cur][0] <= item[cur] && item[cur] <= demand[cur][1]) {
+                return item
+              }
             } else { // category 查询逻辑区域
               if (demand[cur][1]) {
                 return item[cur].indexOf(demand[cur][1]) !== -1

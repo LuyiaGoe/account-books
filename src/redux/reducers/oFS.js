@@ -40,7 +40,7 @@ const distList = (item) => {
       return on_demand([], condition)
     case 'year':
       let thisYear = timeStr(nowMsec).year
-      condition.date = targetMsec(nowMsec, thisYear)
+      condition.data.demand.date = [new Date(thisYear, 1, 1).getTime(), nowMsec]
       return on_demand(allCount, condition)
   }
 }

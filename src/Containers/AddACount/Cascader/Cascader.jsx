@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Card, Row, Col, message } from 'antd';
 import style from './style.module.css'
+import randomNum from 'number-random'
 
 // 添加动画的节流标识
 let addAFlag = true
@@ -54,7 +55,7 @@ function Index (props) {
     }
     return (
       targetArr.map(item => {
-        return <div key={Math.random() * Math.random()}>{item}</div>
+        return <div key={randomNum(100, 10000, true)}>{item}</div>
       })
     )
   }

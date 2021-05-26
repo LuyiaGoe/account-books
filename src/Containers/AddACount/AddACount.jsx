@@ -46,11 +46,11 @@ function Index () {
         </div>
         <div className={style.container}>
           {/* Tabs栏 */}
-          <Tabs defaultActiveKey="1" centered animated style={{ paddingTop: '80px', backgroundColor: 'rgb(248,248,248)' }}>
-            <TabPane tab={<span style={{ fontWeight: 400, fontSize: '20px' }}>支出</span>} key="1">
+          <Tabs defaultActiveKey="payout" centered animated style={{ paddingTop: '80px', backgroundColor: 'rgb(248,248,248)' }}>
+            <TabPane tab={<span style={{ fontWeight: 400, fontSize: '20px' }}>支出</span>} key="payout">
               <Pay pay={true}></Pay>
             </TabPane>
-            <TabPane tab={<span style={{ fontWeight: 400, fontSize: '20px' }}>收入</span>} key="2">
+            <TabPane tab={<span style={{ fontWeight: 400, fontSize: '20px' }}>收入</span>} key="income">
               <Pay pay={false}></Pay>
             </TabPane>
           </Tabs>

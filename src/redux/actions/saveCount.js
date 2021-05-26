@@ -17,8 +17,9 @@
     // 账单备注    非必须
   remark: String
 } */
-import { SAVECOUNT, EDITCOUNT, SAVEASTEMP } from '../constant'
+import { SAVECOUNT, EDITCOUNT, SAVEASTEMP, DELETECOUNT } from '../constant'
 
 export const saveCount = data => ({ type: SAVECOUNT, data })
 export const editCount = data => ({ type: EDITCOUNT, data })
 export const saveAsTemp = data => ({ type: SAVEASTEMP, data })
+export const deleteCount = data => ({ type: DELETECOUNT, data })

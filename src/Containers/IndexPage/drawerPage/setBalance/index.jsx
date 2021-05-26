@@ -7,12 +7,10 @@ class DrawerCalculator extends Component {
     balance: JSON.parse(localStorage.getItem('balance')) || 0
   }
   componentDidMount () {
-    // console.log(this.state.balance);
   }
   closeCalcu = () => {
     localStorage.setItem('balance', JSON.stringify(this.state.result))
     this.setState({ ...this.state, balance: this.state.result })
-    // console.log(JSON.parse(localStorage.getItem('balance')));
   }
   outPut = (value) => {
     this.setState({ ...this.state, result: value })

@@ -6,7 +6,7 @@ import Calculator from '../../Calculator';
 import { Collapse, Calendar, Button, Drawer, notification } from 'antd';
 import globalContext from '../../../globalContext';
 // 这是 redux 的 action，此处依序引入的是：保存当前账单、作为模板保存
-import { saveCount, saveAsTemp } from '../../../redux/actions/saveCount';
+import { saveCount, saveAsTemp, editCount } from '../../../redux/actions/saveCount';
 
 const { Panel } = Collapse;
 
@@ -40,7 +40,6 @@ let numberCat = {
   '家人': ['本人', '老公', '老婆', '子女', '父母', '家庭公用'],
   '其他': ['亲戚', '朋友', '同学', '同事', '其他']
 }
-
 // 初始值
 let initialState = {
   category: '请选择分类',
@@ -88,7 +87,7 @@ function Index (props) {
   // 接收到日历的日期
   const onPanelChange = (data) => {
     info.date = data._d
-    setState({ ...state, data: data._d })
+    setState({ ...state, date: data._d })
   }
   // 分类标签、属性及级联选择器
   const classification = () => {
@@ -196,7 +195,7 @@ function Index (props) {
     if (!verification()) {
       return null
     }
-    info.id = (new Date()).getTime()
+    info.id = state.id ? state.id : (new Date()).getTime()
     info.count = state.count
     info.category = state.category
     info.account = state.account
@@ -205,8 +204,11 @@ function Index (props) {
     info.remark = inputRef.current.value
     info.pay = props.pay
     if (s.toString() === '[object Object]' || s === 2) {
-      props.saveCount(info)
-      // setState(initialState)
+      if (state.id) {
+        props.editCount(info)
+      } else {
+        props.saveCount(info)
+      }
     }
   }
   // 保存为模板
@@ -316,5 +318,5 @@ export default connect(
   state => ({
 
   }),
-  { saveCount, saveAsTemp }
+  { saveCount, saveAsTemp, editCount }
 )(Index)

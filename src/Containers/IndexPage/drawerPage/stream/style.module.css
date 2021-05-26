@@ -7,14 +7,13 @@
   overflow: auto;
 }
 .head{
-  margin-top: 20px;
-  height: 100px;
+  height: 120px;
   width: 100%;
   background-color: #dfe0e1;
   position: fixed;
   display: flex;
   justify-content: space-between;
-  padding : 20px 40px 0;
+  padding : 40px 40px 0;
 }
 .count{
   display: flex;
@@ -34,4 +33,10 @@
   width: 100%;
   margin-top: 120px;
   background-color: #fff;
+}
+.progress{
+  padding: 20px;
+  padding-bottom: 10px;
+  background-color: rgb(209, 209, 209);
+  border-bottom: 1px solid rgb(206, 206, 206);
 }

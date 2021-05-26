@@ -1,0 +1,25 @@
+.container{
+  display: block;
+}
+
+.collapsHead{
+  background-color: rgb(209, 209, 209);
+  display: flex;
+
+}
+.headDisplay{
+  flex:1;
+  padding:  10px;
+  display: flex;
+  justify-content: space-between;
+}
+.headDisplay div{
+  flex:1
+}
+.headDisplay>div:nth-child(2){
+  text-align: right;
+}
+.panel{
+  border: 0;
+  padding: 0;
+}

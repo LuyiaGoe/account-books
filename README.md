@@ -104,3 +104,9 @@
 1. 在antd的card组件中设置一个浮动组件，会出现被外面的组件占掉位置的情况
   + 推测是提供的组件没有触发BFC，通过给card组件设置overflow:hidden解决问题
 2. key值的设置不能为`Math.random()`，引入随机数小插件解决问题
+3. 设置BrowserRouter在github上刷新动作会出现404，因为域名是博客页面，因此用HashRouter
+4. hashHistory在现版本的react-router上无法使用，暂时解决方法如下：
+> ```javascript
+> import { createHashHistory } from 'history';
+> const hashHistory = createHashHistory();
+> ```
