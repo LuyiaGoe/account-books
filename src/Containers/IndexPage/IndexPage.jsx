@@ -43,7 +43,7 @@ function Index (props) {
   useEffect(() => {
     props.getCountData({ list: 'all', demand: {} })
     props.getOFS(props.countData)
-    props.numberFormat(props.ofs)
+    props.numberFormat('all')
     props.rank({ list: 'all', demand: { rank: 'juniorcategory', category: 'payCount' } })
     fresh()
   }, [data])
@@ -87,7 +87,7 @@ function Index (props) {
         let percent = item.sum / kap[0].sum * 100 ? item.sum / kap[0].sum * 100 : 0
         let textColor = item.sum ? '#5f5f5f' : '#d2d2d0'
         return (
-          <div key={randomNum(1, 15, true)}>
+          <div key={randomNum(1, 150000, true)}>
             <p className={style.showProgress} style={{ color: textColor, fontWeight: 550 }}>{item.name}{item.sum ? item.sum.numberFormat(2) : ''}</p>
             <Progress percent={50} showInfo={false} size="small" key={randomNum(0, 10000000, true)} percent={percent} strokeColor={item.color} />
           </div>
@@ -98,10 +98,8 @@ function Index (props) {
   // 拉开对应抽屉，进入二级页面
   const drawerOut = (e) => {
     if (e === 'e') {
-      console.log(1);
       return getStream('month')
     }
-    console.log(2);
     onOpen()
   }
   // 打开抽屉
@@ -110,8 +108,8 @@ function Index (props) {
   }
   // 关闭抽屉
   const onClose = () => {
-    props.history.go(-1)
-    window.location.reload()
+    props.history.go(-1)  // 不能省略
+    // window.location.reload()
     setData({ ...data, visible: false })
   }
 
@@ -121,7 +119,7 @@ function Index (props) {
       <div className={style.head} style={{ display: 'flex', flexDirection: 'row-reverse', padding: 0, width: '700px' }}>
         <Button type="text" onClick={onClose} danger style={{ fontSize: '20px', color: 'brown', marginTop: '20px' }}>
           关闭
-          </Button>
+        </Button>
       </div>
     )
   }
@@ -163,12 +161,10 @@ function Index (props) {
         break
       case 'year':
         start = new Date(year, 0, 1) - 0
-        console.log(new Date(start));
         break
     }
-    console.log(value);
     setData({ ...data, visible: true })
-    history.push('/home/stream', { type: value, start, end: end.getTime() })
+    history.push({ pathname: '/home/stream', params: { type: value, start, end: end.getTime() } })
   }
 
   return (

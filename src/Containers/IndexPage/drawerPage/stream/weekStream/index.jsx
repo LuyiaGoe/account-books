@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import style from './style.module.css'
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import Day from '../dayStream';
 import queryCountData from '../../../../../redux/reducers/countData';
+import randomNum from 'number-random';
 
 class index extends Component {
   constructor(props) {
@@ -13,6 +15,10 @@ class index extends Component {
       start: this.props.timeSeg.start
     }
     this.timeSeg = []
+  }
+  shouldComponentUpdate (nextProps, nextState) {
+    if (nextProps.saveCount) return true
+    return false
   }
   // 对时间进行按天分段
   splitAsDay = () => {
@@ -27,13 +33,12 @@ class index extends Component {
   // 查找每一天是否有数据
   queryDay = (arr) => {
     let list = queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { date: [arr.start, arr.end] } } })
-    console.log(list);
     return list
   }
   flag = true
   // 渲染每一天数据
   renderDays = () => {
-    let weekStr = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+    let weekStr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
     return (
       this.timeSeg.map(item => {
         let list = this.queryDay(item) || []
@@ -55,7 +60,7 @@ class index extends Component {
         sumCount.sum = sumCount.income - sumCount.pay
         // 存在就渲染
         return (
-          <div className={style.dayContain} >
+          <div className={style.dayContain} key={randomNum(100, 10000, true)} >
             <span className={style.dateWeek}>
               <span className={style.dateSec}>{new Date(item.start).getDate()}</span>
               <span className={style.weekSec}>{weekStr[new Date(item.start).getDay()]}</span>
@@ -83,14 +88,14 @@ class index extends Component {
                 <Day timeSeg={item}></Day>
               </div>
             </div>
-          </div>
+          </ div>
         )
       })
     )
   }
   render () {
     return (
-      <div className={style.container}>
+      <div className={style.container} >
         {this.splitAsDay()}
         <div style={{ display: this.flag && this.props.week ? 'flex' : 'none', marginLeft: '45%', height: '70px', alignItems: 'center', fontSize: '18px', borderBottom: '1px solid #efefef' }}>
           <span>{'暂无数据'}</span>
@@ -99,5 +104,11 @@ class index extends Component {
     );
   }
 }
-
-export default index;
+const mapState = (state) => {
+  return {
+    flash: state.saveCount
+  }
+}
+export default connect(
+  mapState
+)(index);

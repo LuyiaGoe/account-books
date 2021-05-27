@@ -7,7 +7,6 @@ import randomNum from 'number-random'
 // 添加动画的节流标识
 let addAFlag = true
 
-
 function Index (props) {
   let [state, setState] = useState({ ...props.obj, 'selectedLeft': 0, 'selectedRight': 0 })
   let rightCol = useRef(null)
@@ -27,10 +26,8 @@ function Index (props) {
   arr = [...arr, ...all.slice(0, all.length - 2), ...arr]
   arrr = [...arrr, ...state[arr[state.selectedLeft + 2]]]
 
-
   let arra = arr.slice(state.selectedLeft, state.selectedLeft + 5)
   let arrb = arrr.slice(state.selectedRight, state.selectedRight + 5)
-
 
   // 随着动画更改级联选择器选中的内容
   let edit = (chara, ref) => {
@@ -55,11 +52,10 @@ function Index (props) {
     }
     return (
       targetArr.map(item => {
-        return <div key={randomNum(100, 10000, true)}>{item}</div>
+        return <div key={randomNum(0, 10000, true)}>{item}</div>
       })
     )
   }
-
 
   // 为节点ref添加滚动动作action
   let addAnimation = (ref, action) => {
@@ -101,7 +97,6 @@ function Index (props) {
       throttle()
     )
   }
-
 
   return (
     <Card className={style.container} bordered>

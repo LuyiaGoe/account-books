@@ -146,10 +146,11 @@ function Index (props) {
       if (typeof obj !== 'object' || obj === null) {
         return obj
       }
+      let result
       if (Array.isArray(obj)) {
-        var result = []
+        result = []
       } else {
-        var result = {}
+        result = {}
       }
       for (let key in obj) {
         result[key] = deepClone(obj[key])
@@ -172,21 +173,20 @@ function Index (props) {
   const collapseList = () => {
     return (
       <Collapse accordion>
-        <Panel header={classification()} key={'paycat'} showArrow={false} style={{ padding: '12px 00px' }}>
+        <Panel header={classification()} key={'paycat'} showArrow={false} style={{ padding: '12px 30px 12px 0' }}>
           <Cascader obj={props.pay ? payCat : incomeCat} change={receivePayCat}></Cascader>
         </Panel>
-        <Panel header={account()} key={'account'} showArrow={false} style={{ padding: '12px 00px' }}>
+        <Panel header={account()} key={'account'} showArrow={false} style={{ padding: '12px 30px 12px 0' }}>
           <Cascader obj={AccountCat} change={receiveAccountCat}></Cascader>
         </Panel>
-        <Panel header={date()} key={'datecat'} showArrow={false} style={{ padding: '12px 00px' }}>
+        <Panel header={date()} key={'datecat'} showArrow={false} style={{ padding: '12px 30px 12px 0' }}>
           <div className={style.site_calendar_demo_card}>
             <Calendar fullscreen={false} onChange={onPanelChange} ></Calendar>
           </div>
         </Panel>
-        <Panel header={number()} key={'numbercat'} showArrow={false} style={{ padding: '12px 00px' }}>
+        <Panel header={number()} key={'numbercat'} showArrow={false} style={{ padding: '12px 30px 12px 0' }}>
           <Cascader obj={numberCat} change={receiveNumberCat}></Cascader>
         </Panel>
-
       </Collapse>
     )
   }

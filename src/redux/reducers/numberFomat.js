@@ -1,4 +1,5 @@
 import { NUMFOR } from '../constant'
+import getOFS from './oFS'
 // 将数字格式化为金额
 // c表示保留几位小数
 // d小数点位置的符号,可以正常地设置为'.',也可以自定义
@@ -68,8 +69,12 @@ Number.prototype.numberFormat = function (c, d, t) {
 };
 
 export default function numberFormat (pre = initState, action) {
-  const { type, data } = action
+  let { type, data } = action
   if (type === NUMFOR) {
+    if (data === 'all') {
+      let allCount = JSON.parse(localStorage.getItem('allCount')) || [] // 获取所有账单数据
+      data = getOFS('', { type: 'getOFS', data: allCount })
+    }
     const deepClone = (obj, flag = false) => {  // 深度遍历对象，遍历时检查并格式化金额，返回一个格式化好的对象
       if (typeof obj !== 'object' || obj === null) {
         if (flag) {

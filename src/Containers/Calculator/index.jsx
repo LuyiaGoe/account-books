@@ -171,7 +171,7 @@ class index extends Component {
             {
               this.numberArr.map((item) => {
                 return (
-                  <Col span={24} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} key={randomNum(0, 10, true)}>
+                  <Col span={24} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} key={randomNum(0, 100000, true)}>
                     <Button type='primary'>{item}</Button><Button type='primary'>{item + 1}</Button><Button type='primary'>{item + 2}</Button>
                   </Col>
                 )

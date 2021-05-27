@@ -1,0 +1,50 @@
+.container{
+  padding-top: 80px;
+  position: absolute;
+  width: 100%;
+  box-shadow: -5px 0 15px rgb(0 0 0 / 20%);
+}
+.head{
+  position: fixed;
+  top: 0;
+  height: 80px;
+  width: 100%;
+  z-index: 5;
+  color: #6f591e;
+  font-weight: 600;
+  line-height: 80px;
+  transform: translateX(-200px);
+  padding:0 0 0 200px;
+}
+.headContent{
+  display: flex;
+  justify-content: center;
+  background-color:  rgb(250,211,71) ;
+  height: 100%;
+  width: 100%;
+}
+.countHead{
+  height: 120px;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  transform: translateX(-200px);
+  justify-content: space-between;
+  padding :  0px 0px 0 200px;
+  z-index: 50;
+}
+.count{
+  padding-top: 35px;
+  background-color: #dfe0e1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.displayArea{
+  margin-top: 120px;
+}
+.turning{
+  cursor: pointer;
+  margin: auto 5px;
+  color: #a96c37;
+}

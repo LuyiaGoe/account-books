@@ -30,20 +30,28 @@ class index extends React.Component {
       flag: false
     }
     this.timeSeg = []
+    this.displayTime = false
   }
 
   static getDerivedStateFromProps (nextProps, preState) {
+    let { start, end } = nextProps.timeSeg
+    let { start: sstart } = preState
+    if (start !== sstart) {
+      return { ...preState, start, end, displayTime: true }
+    }
     if (nextProps.flash && nextProps.flash.id !== preState.flash.id) {
       return { ...preState, flash: nextProps.flash, flag: true }
     }
-    return { ...preState, flag: false }
+    return { ...preState, flag: false, displayTime: false }
   }
   shouldComponentUpdate (nextProps, nextState) {
-    if (nextProps.flash && nextState.flag) {
-      console.log(1);
+    let { displayTime } = nextState
+    if (displayTime) {
       return true
     }
-    console.log(2);
+    if (nextProps.flash && nextState.flag) {
+      return true
+    }
     return false;
   }
   // 对时间按星期划分
@@ -62,7 +70,6 @@ class index extends React.Component {
       this.timeSeg[i] = { start: new Date(y, m - i, 1).getTime(), end: new Date(y, m + 1 - i, 1).getTime() - 1 }
       i++
     }
-    console.log(this.timeSeg);
     return this.renderWeeks()
   }
   // 渲染每月数据
@@ -86,9 +93,10 @@ class index extends React.Component {
           </div>
         </Panel>)
       }
+      let key = randomNum(1, 10000, false)
       return (
-        <Panel header={this.renderHead(list, item, index)} key={randomNum(100, 10000, true)} showArrow={false} >
-          <Month week={false} timeSeg={item}></Month>
+        <Panel header={this.renderHead(list, item, index)} key={key} showArrow={false} >
+          <Month week={false} timeSeg={item} ></Month>
         </Panel>
       )
     })

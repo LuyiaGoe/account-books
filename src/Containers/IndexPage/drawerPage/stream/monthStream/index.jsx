@@ -41,10 +41,8 @@ class index extends React.Component {
   }
   shouldComponentUpdate (nextProps, nextState) {
     if (nextProps.flash && nextState.flag) {
-      console.log(1);
       return true
     }
-    console.log(2);
     return false;
   }
   // 对时间按星期划分
@@ -122,7 +120,7 @@ class index extends React.Component {
       })
       this.state.sumCount.sum = this.state.sumCount.income - this.state.sumCount.pay
       return (
-        <Week week={this.props.week} timeSeg={item}></Week>
+        <Week week={this.props.week} timeSeg={item} key={randomNum(1, 10000, true)}></Week>
       )
     })
   }

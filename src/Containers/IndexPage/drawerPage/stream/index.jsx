@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import style from './style.module.css'
 import { Progress } from 'antd';
@@ -14,19 +15,19 @@ import Year from './yearStream';
 class Stream extends Component {
   constructor(props) {
     super(props)
-    this.type = this.props.location.state.type
+    this.type = this.props.location.params.type
     this.balance = JSON.parse(localStorage.getItem('balance')) || 0
     this.bal = this.props.ofs.monthRevenue.pay
   }
   state = {
-    start: this.props.location.state.start,
-    end: this.props.location.state.end,
+    start: this.props.location.params.start,
+    end: this.props.location.params.end,
     // 中断更新用，当flash的ID与这个不同，就不渲染页面
     id: 2021,
     // 辅助标识
     flag: false
   }
-  list = [...getCountData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { date: [this.props.location.state.start, this.props.location.state.end] } } })]
+  list = [...getCountData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { date: [this.props.location.params.start, this.props.location.params.end] } } })]
   static getDerivedStateFromProps (nextProps, preState) {
     const { flash } = nextProps
     if (flash && flash.id !== preState.id) {
@@ -72,7 +73,8 @@ class Stream extends Component {
       })
     }
     this.count.balance = this.count.income - this.count.pay
-    this.list = [...getCountData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { date: [this.props.location.state.start, this.props.location.state.end] } } })]
+    this.list = [...getCountData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { date: [this.props.location.params.start, this.props.location.params.end] } } })]
+    // this.list = [...getCountData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { date: [this.state.start, this.state.end] } } })]
   }
   // 展示区
   display = () => {
@@ -105,18 +107,24 @@ class Stream extends Component {
   }
   render () {
     this.sumCount()
-
     return (
       <div className={style.container}>
-        {/* 金额汇总区域 */}
-        <div className={style.head}>
-          <div className={style.count}><span>{this.count.balance.numberFormat(2)}</span><div style={{ textAlign: 'left' }}>结余</div></div>
-          <div className={style.count}><span>{this.count.income.numberFormat(2)}</span><div style={{ textAlign: 'center' }}>收入</div></div>
-          <div className={style.count}><span>{this.count.pay.numberFormat(2)}</span><div style={{ textAlign: 'right' }}>支出</div></div>
+        {/* 标题区域 */}
+        <div className={style.title} >
+          {this.type}
         </div>
-        {/* 展示区 */}
-        <div className={style.stream}>
-          {this.display()}
+        {/* 主体区域 */}
+        <div style={{ overflow: 'auto' }}>
+          {/* 金额汇总区域 */}
+          <div className={style.head}>
+            <div className={style.count}><span>{this.count.balance.numberFormat(2)}</span><div style={{ textAlign: 'left' }}>结余</div></div>
+            <div className={style.count}><span>{this.count.income.numberFormat(2)}</span><div style={{ textAlign: 'center' }}>收入</div></div>
+            <div className={style.count}><span>{this.count.pay.numberFormat(2)}</span><div style={{ textAlign: 'right' }}>支出</div></div>
+          </div>
+          {/* 展示区 */}
+          <div className={style.stream}>
+            {this.display()}
+          </div>
         </div>
       </div>
     )
@@ -135,4 +143,4 @@ const mapStatetoProps = (state) => {
 export default connect(
   mapStatetoProps,
   { getOFS }
-)(Stream);
+)(withRouter(Stream));

@@ -30,16 +30,16 @@ class DaySteam extends Component {
     flag: false
   }
   static getDerivedStateFromProps (nextProps, preState) {
-    const { selected } = nextProps
+    const { selected, flash } = nextProps
     // list为空，没有账单时
     if (preState.list.length === 0) {
       return { ...preState, visible: false }
     }
     // 有编辑、删除改动的传入（flash不为null）
-    if (nextProps.flash && !preState.flag) {
+    if (flash && !preState.flag) {
       return { ...preState, list: queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { date: [nextProps.timeSeg.start, nextProps.timeSeg.end] } } }), flag: true, visible: false }
     }
-    // 传入账单有且仅有一个，且selected[0].id不等于0时，说明返回的是要编辑的账单
+    // 传入账单有且仅有一个，且selected[0].id不等于0时，说明返回的是要编辑的账单,当全部账单只有一个时，也会通过这个判断，成为bug，加个flash判断条件
     if (selected.length === 1 && selected[0].id !== 0) {
       return { ...preState, selected: nextProps.selected, flag: false }
     }
@@ -94,7 +94,7 @@ class DaySteam extends Component {
       keyArr.map(item => {
         const { id, category, account, pay, count } = this.state.list[item]
         return (
-          <div className={style.row} key={random(1, 100, false)} data-key={id} >
+          <div className={style.row} key={random(1, 10000, false)} data-key={id} >
             <div style={{ marginLeft: id ? '0' : '45%' }}>
               <span>{category ? category.split('>')[0] : '暂无数据'}</span>
               <span>{account}</span>
@@ -145,8 +145,9 @@ class DaySteam extends Component {
       </div>
     )
   }
-
+  a = 0
   render () {
+    this.a++
     return (
       <div>
         {/* 展示区 */}

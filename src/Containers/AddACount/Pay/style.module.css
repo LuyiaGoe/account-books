@@ -29,12 +29,12 @@
 .remark{
   outline: none;
   border: none;
-  height: 80px;
+  height: 60px;
   width: 80%;
   font-size: 20px;
   color: gray;
   background-color: rgb(248,248,248);
-  margin: auto 60px;
+  margin: auto 50px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

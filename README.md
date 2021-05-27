@@ -105,8 +105,4 @@
   + 推测是提供的组件没有触发BFC，通过给card组件设置overflow:hidden解决问题
 2. key值的设置不能为`Math.random()`，引入随机数小插件解决问题
 3. 设置BrowserRouter在github上刷新动作会出现404，因为域名是博客页面，因此用HashRouter
-4. hashHistory在现版本的react-router上无法使用，暂时解决方法如下：
-> ```javascript
-> import { createHashHistory } from 'history';
-> const hashHistory = createHashHistory();
-> ```
+  + 当前页面只有一个params值，因此想要在同一个页面，通过params进入不同路由，需要go（-1）返回第一次通过params跳转的页面，有个不能省略的注释标记在代码中
