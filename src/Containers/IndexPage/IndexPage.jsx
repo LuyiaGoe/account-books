@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import randomNum from 'number-random'
 import { Switch, Link, Route, useHistory } from 'react-router-dom';
 // antd
-import { Row, Col, Card, Progress, Drawer, Button } from 'antd'
+import { Row, Col, Card, Progress, Drawer } from 'antd'
 import { RightOutlined } from '@ant-design/icons';
 // actions
 import { getCountData } from '../../redux/actions/countData';
@@ -14,7 +14,10 @@ import { getOFS } from '../../redux/actions/oFS';
 // components
 import Calculator from './drawerPage/setBalance';
 import Stream from './drawerPage/stream';
+import Assets from '../../Pages/drawerPage/assets';
 
+// 对付hash路由bug的临时标识
+let a = 0
 
 function Index (props) {
   let kap = [{ name: '暂无数据', sum: 0, color: 'gray' }, { name: '暂无数据', sum: 0, color: 'gray' }, { name: '暂无数据', sum: 0, color: 'gray' }]
@@ -23,7 +26,6 @@ function Index (props) {
   // 用来确定当前时间以及获取redux传来的countData
   const fresh = () => {
     if (!data.time || (new Date().getTime() - data.msec) > 1000) {
-
       let day2 = new Date();
       day2.setTime(day2.getTime());
       let time = {
@@ -112,14 +114,14 @@ function Index (props) {
     // window.location.reload()
     setData({ ...data, visible: false })
   }
-
   // 抽屉头部区域
   const title = () => {
+    if (!data.visible && !a) {
+      a++
+      return props.history.push('/home')
+    }
     return (
-      <div className={style.head} style={{ display: 'flex', flexDirection: 'row-reverse', padding: 0, width: '700px' }}>
-        <Button type="text" onClick={onClose} danger style={{ fontSize: '20px', color: 'brown', marginTop: '20px' }}>
-          关闭
-        </Button>
+      <div className={style.head} style={{ display: 'flex', flexDirection: 'row-reverse', padding: 0, width: '700px', zIndex: 0 }}>
       </div>
     )
   }
@@ -142,7 +144,7 @@ function Index (props) {
 
     )
   }
-  // 按时间进入
+  // 按时间进入流水页面Stream
   const getStream = (value) => {
     let end = new Date(),
       date = end.getDate(),
@@ -166,7 +168,29 @@ function Index (props) {
     setData({ ...data, visible: true })
     history.push({ pathname: '/home/stream', params: { type: value, start, end: end.getTime() } })
   }
-
+  // 跳转入资产页面Asset
+  const assetsPage = (value) => {
+    console.log(value);
+    switch (value) {
+      case 'cash':
+        value = '现金'
+        break;
+      case 'bank':
+        value = '银行卡'
+        break;
+      case 'busCard':
+        value = '公交卡'
+        break
+      case 'alipay':
+        value = '支付宝'
+        break
+      case 'weChat':
+        value = '微信'
+        break
+    }
+    setData({ ...data, visible: true })
+    history.push({ pathname: '/home/assets', params: { type: value } })
+  }
   return (
     <div className={style.container} >
       {/* 头部区域 */}
@@ -279,17 +303,18 @@ function Index (props) {
       <Card style={{ position: 'relative', overflow: 'hidden' }}>
         {/* 现金账户 */}
         <Row>
-          <Col span={24} style={{ borderBottom: '1px solid rgb(248,248,248)', fontSize: '25px', fontWeight: '700', paddingBottom: '15px', paddingLeft: '-40px' }}> 总资产：
-          <span style={{ float: 'right', textAlign: 'right' }}>￥{props.numFor ? props.numFor.sumAsset : 0}</span>
+          <Col span={24} style={{ borderBottom: '1px solid rgb(248,248,248)', fontSize: '25px', fontWeight: '700', paddingBottom: '15px', paddingLeft: '-40px' }}>
+            <span>总资产：</span>
+            <span style={{ float: 'right', textAlign: 'right' }}>￥{props.numFor ? props.numFor.sumAsset : 0}</span>
           </Col>
-          <Col span={24} className={style.assetsCard}>
+          <Col span={24} className={style.assetsCard} >
             <Col span={24} className={style.classify} style={{ lineHeight: '30px', borderBottom: 0 }}>
               <div className={style.stickBlock}></div>
               <span style={{ color: '#777e88', fontWeight: '600' }}>现金账户</span>
               <span style={{ color: '#777e88', fontWeight: '600' }}>￥{props.numFor ? props.numFor.cashAsset : 0}</span>
             </Col>
             {/* 详情 */}
-            <Col>
+            <Col onClick={() => { assetsPage('cash') }} style={{ cursor: 'pointer' }}>
               <div className={style.classify} style={{ borderBottom: 0 }}>
                 <span style={{ color: 'black', fontWeight: '400', fontSize: '20px', marginTop: '15px' }}>
                   现金
@@ -313,7 +338,7 @@ function Index (props) {
               <span style={{ color: '#777e88', fontWeight: '600' }}>￥{props.numFor ? props.numFor.virtualAsset : 0}</span>
             </Col>
             {/* 详情 */}
-            <Col>
+            <Col onClick={() => { assetsPage('bank') }} style={{ cursor: 'pointer' }}>
               <div className={style.classify} style={{ paddingBottom: '15px' }}>
                 <span style={{ color: 'black', fontWeight: '400', fontSize: '20px', marginTop: '15px' }}>
                   银行卡
@@ -323,7 +348,7 @@ function Index (props) {
                 </span>
               </div>
             </Col>
-            <Col>
+            <Col onClick={() => { assetsPage('busCard') }} style={{ cursor: 'pointer' }}>
               <div className={style.classify} style={{ paddingBottom: '15px' }}>
                 <span style={{ color: 'black', fontWeight: '400', fontSize: '20px', marginTop: '15px' }}>
                   公交卡
@@ -333,7 +358,7 @@ function Index (props) {
                 </span>
               </div>
             </Col>
-            <Col>
+            <Col onClick={() => { assetsPage('alipay') }} style={{ cursor: 'pointer' }}>
               <div className={style.classify} style={{ paddingBottom: '15px' }}>
                 <span style={{ color: 'black', fontWeight: '400', fontSize: '20px', marginTop: '15px' }}>
                   支付宝
@@ -343,7 +368,7 @@ function Index (props) {
                 </span>
               </div>
             </Col>
-            <Col>
+            <Col onClick={() => { assetsPage('weChat') }} style={{ cursor: 'pointer' }}>
               <div className={style.classify} style={{ borderBottom: 0 }}>
                 <span style={{ color: 'black', fontWeight: '400', fontSize: '20px', marginTop: '15px' }}>
                   微信
@@ -372,6 +397,7 @@ function Index (props) {
           <Switch>
             <Route path='/home/setBalance' component={Calculator} />
             <Route path='/home/stream' component={Stream} />
+            <Route path='/home/assets' component={Assets} />
           </Switch>
         </div>
       </Drawer>

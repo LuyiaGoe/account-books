@@ -52,7 +52,7 @@ function Index () {
           <Sider className={style.side} style={{ position: 'fixed', height: '100%' }}>
             <Head style={{ position: 'fixed' }}></Head>
             <Menu
-              defaultSelectedKeys={items}
+              defaultSelectedKeys={'/' + history.location.pathname.split('/')[1]}
               mode="inline"
               className={style.font}
             >

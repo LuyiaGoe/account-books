@@ -17,11 +17,6 @@ class index extends React.Component {
       list: queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { date: [this.props.timeSeg.start, this.props.timeSeg.end] } } }),
       end: this.props.timeSeg.end,
       start: this.props.timeSeg.start,
-      sumCount: {
-        sum: 0,
-        income: 0,
-        pay: 0
-      },
       // 刷新判断，这个是被修改的账单，关键信息是id，修改过后id将会变化，一个变化了的账单传入，就要刷新页面
       flash: {
         id: void (0)
@@ -29,33 +24,38 @@ class index extends React.Component {
       // 辅助判断标识
       flag: false
     }
+    this.sumCount = {
+      sum: 0,
+      income: 0,
+      pay: 0
+    }
     this.timeSeg = []
-    this.displayTime = false
+    this.sflag = 0
   }
 
   static getDerivedStateFromProps (nextProps, preState) {
     let { start, end } = nextProps.timeSeg
     let { start: sstart } = preState
     if (start !== sstart) {
-      return { ...preState, start, end, displayTime: true }
+      return { ...preState, start, end }
     }
     if (nextProps.flash && nextProps.flash.id !== preState.flash.id) {
       return { ...preState, flash: nextProps.flash, flag: true }
     }
-    return { ...preState, flag: false, displayTime: false }
+    return { ...preState, flag: false }
   }
   shouldComponentUpdate (nextProps, nextState) {
-    let { displayTime } = nextState
-    if (displayTime) {
+    if (nextProps.flash && nextState.flag) {
       return true
     }
-    if (nextProps.flash && nextState.flag) {
+    if (this.sflag !== nextState.start) {
       return true
     }
     return false;
   }
   // 对时间按星期划分
   splitAsWeek = () => {
+    this.sflag = this.state.start
     // 找到该月的第一天与最后一天最后一刻的毫秒数
     let s = this.state.start
     let e = this.state.end
@@ -70,22 +70,21 @@ class index extends React.Component {
       this.timeSeg[i] = { start: new Date(y, m - i, 1).getTime(), end: new Date(y, m + 1 - i, 1).getTime() - 1 }
       i++
     }
-    return this.renderWeeks()
   }
+  keys = ['1yue', '2yue', '3yue', '4yue', '5yue', '6yue', '7yue', '8yue', '9yue', '10yue', '11yue', '12yue']
   // 渲染每月数据
   renderWeeks = () => {
+    this.splitAsWeek()
     return this.timeSeg.map((item, index) => {
       let list = this.queryMonth(item) || []
       list.map(item => {
         if (item.pay) {
-          let number = this.state.sumCount.pay + item.count * 1
-          this.setState({ ...this.state, sumCount: { ...this.state.sumCount, pay: number } })
+          this.sumCount.pay += item.count * 1
         } else {
-          let number = this.state.sumCount.income + item.count * 1
-          this.setState({ ...this.state, sumCount: { ...this.state.sumCount, income: number } })
+          this.sumCount.income += item.count * 1
         }
       })
-      this.state.sumCount.sum = this.state.sumCount.income - this.state.sumCount.pay
+      this.sumCount.sum = this.sumCount.income - this.sumCount.pay
       if (!list.length) {
         return (<Panel header={this.renderHead(list, item, index)} key={randomNum(100, 10000, true)} showArrow={false} >
           <div style={{ paddingTop: '20px', marginLeft: '45%', height: '70px', alignItems: 'center', fontSize: '18px', borderBottom: '1px solid #efefef' }}>
@@ -93,9 +92,8 @@ class index extends React.Component {
           </div>
         </Panel>)
       }
-      let key = randomNum(1, 10000, false)
       return (
-        <Panel header={this.renderHead(list, item, index)} key={key} showArrow={false} >
+        <Panel header={this.renderHead(list, item, index)} key={this.keys[index]} showArrow={false} >
           <Month week={false} timeSeg={item} ></Month>
         </Panel>
       )
@@ -111,7 +109,6 @@ class index extends React.Component {
   renderHead = (list, item, index) => {
     // 获取周-月-日
     let month = new Date(item.start).getMonth() + 1
-    let dayStart = new Date(item.start).getDate()
     let dayEnd = new Date(item.end).getDate()
     // 获取收支、结余
     let compute = {
@@ -146,17 +143,17 @@ class index extends React.Component {
           <div style={{ visibility: list[0].id ? 'visible' : 'hidden' }}>
             <div style={{ color: '#e06c62', display: 'flex', flexDirection: 'column' }}>
               <span>收 {compute.income}</span>
-              <Progress percent={compute.income ? compute.income / this.state.sumCount.income * 100 : 5} showInfo={false} size="small" strokeColor='#e06c62' />
+              <Progress percent={compute.income ? compute.income / this.sumCount.income * 100 : 5} showInfo={false} size="small" strokeColor='#e06c62' />
             </div>
             <div style={{ color: '#56b78c', display: 'flex', flexDirection: 'column' }}>
               <span>支 {compute.pay}</span>
-              <Progress percent={compute.pay ? compute.pay / this.state.sumCount.pay * 100 : 5} showInfo={false} size="small" strokeColor='#56b78c' />
+              <Progress percent={compute.pay ? compute.pay / this.sumCount.pay * 100 : 5} showInfo={false} size="small" strokeColor='#56b78c' />
             </div>
           </div>
           <div className='balanceA'>
             <div style={{ color: '#787979' }}>结余</div>
             <div style={{ color: 'black', fontWeight: 400, fontSize: '20px', marginTop: '-10px' }}>{compute.sum.numberFormat(2)}</div>
-            <Progress percent={compute.sum <= 0 ? 95 : compute.sum >= this.state.sumCount.sum ? 0 : 1 - compute.sum / this.state.sumCount.sum * 100} showInfo={false} size="small" strokeColor='rgb(209, 209, 209)' />
+            <Progress percent={compute.sum <= 0 ? 95 : compute.sum >= this.sumCount.sum ? 0 : 1 - compute.sum / this.sumCount.sum * 100} showInfo={false} size="small" strokeColor='rgb(209, 209, 209)' />
           </div>
         </div>
       </div>
@@ -165,8 +162,8 @@ class index extends React.Component {
   render () {
     return (
       <div>
-        <Collapse accordion className='site_collapse_custom_collapse'>
-          {this.splitAsWeek()}
+        <Collapse accordion defaultActiveKey={[this.keys[0]]}>
+          {this.renderWeeks()}
         </Collapse>
       </div>
     );

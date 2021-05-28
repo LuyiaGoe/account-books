@@ -35,12 +35,14 @@
   height: 2px;
   margin: -8px 0 -5px 0;
 }
+.monthBalance .ant-progress-bg{
+  transform: translateY(-1px);
+  height: 4px;
+}
 .monthBalance .ant-progress-inner{
   background-color: rgb(209, 209, 209);
 }
-.balanceA .ant-progress-inner{
-  background-color: #787979;
-}
+
 .balanceA .ant-progress,
 .balanceA .ant-progress-outer,
 .balanceA .ant-progress-inner{

@@ -13,7 +13,6 @@ import { getOFS } from '../../../../redux/actions/oFS'
 import Day from './dayStream';
 import Week from './weekStream';
 import Month from './monthStream';
-import Year from './yearStream';
 
 class Stream extends Component {
   constructor(props) {
