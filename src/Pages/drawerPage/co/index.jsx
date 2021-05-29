@@ -21,8 +21,8 @@ const { Panel } = Collapse;
 class Stream extends Component {
   constructor(props) {
     super(props)
-    this.type = this.props.history.location.params.type
-    this.list = getCountData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { account: this.type } } })
+    this.state = { type: this.props.history.location.params.type }
+    this.list = getCountData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { account: this.state.type } } })
     this.assetsArr = {}
     this.start = 0
     this.end = new Date().getTime()

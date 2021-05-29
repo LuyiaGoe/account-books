@@ -165,7 +165,7 @@ class index extends React.Component {
     compute.sum = compute.income - compute.pay
     return (
       <div className={style.collapsHead}>
-        <div style={{ width: '120px', display: 'flex', justifyContent: 'center', height: '60px', paddingTop: '4px' }}>
+        <div style={{ width: '120px', display: 'flex', justifyContent: 'center', height: '60px', paddingTop: '10px' }}>
           <div >
             <div>
               <span style={{ fontSize: '25px', color: 'black', fontWeight: 600 }}>{this.timeSeg.length - index}</span>

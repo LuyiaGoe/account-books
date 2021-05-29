@@ -2,7 +2,7 @@
   display: block;
   /* border-bottom:1px solid #e4e4e4 ; */
   border-left:1px solid #e4e4e4 ;
-  padding: 10px 30px;
+  /* padding: 10px 30px; */
 }
 
 .card{
@@ -19,6 +19,7 @@
   padding: 10px 35px 10px 5px;
   border-bottom: 1px solid #e4e4e4;
   cursor: pointer;
+  margin: 10px 30px;
 }
 
 .row div:nth-child(1) {

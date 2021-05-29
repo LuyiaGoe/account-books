@@ -163,24 +163,24 @@ class index extends Component {
     return (
       <div className={style.container} onClick={this.getValue} >
         <div className={style.display}>{(this.state.display * 1).numberFormat(2)}</div>
-        <Row style={{ margin: 'auto 20px' }}>
-          <Col span={18} style={{ display: 'flex', flexDirection: 'column-reverse' }}>
-            <Col span={24} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+        <Row className={style.row}>
+          <Col span={18} className={style.sonCol} >
+            <Col span={24} className={style.grandCol} >
               <Button type='primary' style={{ background: 'linear-gradient(to bottom,#f2b452,#d78437)' }}>C</Button><Button type='primary'>0</Button><Button type='primary'>.</Button>
             </Col>
             {
               this.numberArr.map((item) => {
                 return (
-                  <Col span={24} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }} key={randomNum(0, 100000, true)}>
+                  <Col span={24} className={style.grandCol} key={randomNum(0, 100000, true)}>
                     <Button type='primary'>{item}</Button><Button type='primary'>{item + 1}</Button><Button type='primary'>{item + 2}</Button>
                   </Col>
                 )
               })
             }
           </Col>
-          <Col span={6} style={{ display: 'flex', flexDirection: 'column' }}>
-            <Button type='primary' style={{ background: '#909fb7' }}>+</Button>
-            <Button type='primary' style={{ background: '#909fb7' }}>-</Button>
+          <Col span={6} className={style.functionButton}>
+            <Button type='primary' className={style.indecrease} >+</Button>
+            <Button type='primary' className={style.indecrease}>-</Button>
             <Button type='primary' className={style.resultBotton}>{this.wrench ? '=' : 'OK'}</Button>
           </Col>
         </Row>

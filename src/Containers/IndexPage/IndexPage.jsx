@@ -14,7 +14,7 @@ import { getOFS } from '../../redux/actions/oFS';
 // components
 import Calculator from './drawerPage/setBalance';
 import Stream from './drawerPage/stream';
-import Assets from '../../Pages/drawerPage/assets';
+import Assets from '../../Pages/drawerPage/co/stream';
 
 // 对付hash路由bug的临时标识
 let a = 0
@@ -170,26 +170,36 @@ function Index (props) {
   }
   // 跳转入资产页面Asset
   const assetsPage = (value) => {
-    console.log(value);
+    // 试验用
+    let end = new Date(),
+      date = end.getDate(),
+      month = end.getMonth(),
+      year = end.getFullYear(),
+      start = 0
     switch (value) {
       case 'cash':
         value = '现金'
+        start = new Date(year, 0, 1) - 0
         break;
       case 'bank':
         value = '银行卡'
+        start = new Date(year, 0, 1) - 0
         break;
       case 'busCard':
         value = '公交卡'
+        start = new Date(year, 0, 1) - 0
         break
       case 'alipay':
+        start = new Date(year, 0, 1) - 0
         value = '支付宝'
         break
       case 'weChat':
+        start = new Date(year, 0, 1) - 0
         value = '微信'
         break
     }
     setData({ ...data, visible: true })
-    history.push({ pathname: '/home/assets', params: { type: value } })
+    history.push({ pathname: '/home/assets', params: { type: value, start, end: end.getTime() } })
   }
   return (
     <div className={style.container} >

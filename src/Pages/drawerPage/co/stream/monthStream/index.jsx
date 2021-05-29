@@ -13,8 +13,10 @@ class index extends React.Component {
   constructor(props) {
     getOFS(JSON.parse(localStorage.getItem('allCount')) || [])
     super(props)
+    this.type = this.props.type
     this.state = {
-      list: queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { date: [this.props.timeSeg.start, this.props.timeSeg.end] } } }),
+      type: this.props.type,
+      list: queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { account: this.type, date: [this.props.timeSeg.start, this.props.timeSeg.end] } } }),
       end: this.props.timeSeg.end,
       start: this.props.timeSeg.start,
       sumCount: {
@@ -87,7 +89,7 @@ class index extends React.Component {
       this.state.sumCount.sum = this.state.sumCount.income - this.state.sumCount.pay
       return (
         <Panel header={this.renderHead(list, item, index)} key={this.keys[index]} showArrow={false} >
-          <Week week={this.props.week} timeSeg={item}></Week>
+          <Week week={this.props.week} timeSeg={item} type={this.type}></Week>
         </Panel>
       )
     })
@@ -135,7 +137,7 @@ class index extends React.Component {
 
   // 查询账单数据
   queryWeek = (obj) => {
-    let list = queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { date: [obj.start, obj.end] } } })
+    let list = queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { account: this.state.type, date: [obj.start, obj.end] } } })
     return list
   }
 
@@ -180,7 +182,7 @@ class index extends React.Component {
               <span>收 {compute.income}</span>
               <Progress percent={compute.income ? compute.income / this.state.sumCount.income * 100 : 5} showInfo={false} size="small" strokeColor='#e06c62' />
             </div>
-            <div style={{ color: '#56b78c', display: 'flex', flexDirection: 'column', marginTop: '15px' }}>
+            <div style={{ color: '#56b78c', display: 'flex', flexDirection: 'column' }}>
               <span>支 {compute.pay}</span>
               <Progress percent={compute.pay ? compute.pay / this.state.sumCount.pay * 100 : 5} showInfo={false} size="small" strokeColor='#56b78c' />
             </div>

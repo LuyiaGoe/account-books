@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom'
 import style from './style.module.css'
 import { connect } from 'react-redux'
 // antd
@@ -15,55 +16,50 @@ import random from 'number-random';
 
 class DaySteam extends Component {
   // 直接通过父组件传下来的时间段timeSeg查询目标账单清单
-  visible = false
-  state = {
-    // 初始化时循环渲染的账单列表
-    list: this.props.timeSeg,
-    // 编辑页面可视标识
-    // 被选中的账单
-    selected: this.props.timeSeg,
-    // 删除窗口可视标志
-    isModalVisible: false,
-    // 刷新判断，这个是被修改的账单，关键信息是id，修改过后id将会变化，一个变化了的账单传入，就要刷新页面
-    flash: { id: void (0) },
-    // 辅助判断标识
-    flag: false
+  constructor(props) {
+    super(props)
+    this.type = this.props.history.location.params.type
+    this.state = {
+      type: this.props.history.location.params.type,
+      // 初始化时循环渲染的账单列表
+      list: queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { account: this.type, date: [this.props.timeSeg.start, this.props.timeSeg.end] } } }),
+      // 编辑页面可视标识
+      visible: false,
+      // 被选中的账单
+      selected: this.props.selected || [{ id: 0, pay: true }],
+      // 删除窗口可视标志
+      isModalVisible: false,
+      // 刷新判断，这个是被修改的账单，关键信息是id，修改过后id将会变化，一个变化了的账单传入，就要刷新页面
+      flash: { id: void (0) },
+      // 辅助判断标识
+      flag: false
+    }
   }
-  // static getDerivedStateFromProps (nextProps, preState) {
-  //   const { selected, flash } = nextProps
-  //   // list为空，没有账单时
-  //   if (preState.list.length === 0) {
-  //     return { ...preState, visible: false }
-  //   }
-  //   // 有编辑、删除改动的传入（flash不为null）
-  //   if (flash && !preState.flag) {
-  //     return { ...preState, list: queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { type: nextProps.type } } }), flag: true, visible: false }
-  //   }
-  //   // 传入账单有且仅有一个，且selected[0].id不等于0时，说明返回的是要编辑的账单,当全部账单只有一个时，也会通过这个判断，成为bug，加个flash判断条件
-  //   if (selected.length === 1 && selected[0].id !== 0) {
-  //     return { ...preState, selected: nextProps.selected, flag: false }
-  //   }
-  //   return { ...preState, flag: false }
-  // }
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   if (nextProps.flash === null) {
-  //     return true
-  //   }
-  //   if (nextProps.flash && (nextState.flag || nextState.isModalVisible)) {
-  //     return true
-  //   }
-  //   return false;
-  // }
-  // static getDerivedStateFromProps (nextProps, preState) {
-  //   const { flash } = nextProps
-  //   if (flash) {
-  //     return { ...preState, flash: nextProps.flash, visible: nextProps.visible }
-  //   }
-  //   return { ...preState, flash: nextProps.flash }
-  // }
+
+  static getDerivedStateFromProps (nextProps, preState) {
+    const { selected, flash } = nextProps
+    // list为空，没有账单时
+    if (preState.list.length === 0) {
+      return { ...preState, visible: false }
+    }
+    // 有编辑、删除改动的传入（flash不为null）
+    if (flash && !preState.flag) {
+      return { ...preState, list: queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { account: preState.type, date: [nextProps.timeSeg.start, nextProps.timeSeg.end] } } }), flag: true, visible: false }
+    }
+    // 传入账单有且仅有一个，且selected[0].id不等于0时，说明返回的是要编辑的账单,当全部账单只有一个时，也会通过这个判断，成为bug，加个flash判断条件
+    if (selected.length === 1 && selected[0].id !== 0) {
+      return { ...preState, selected: nextProps.selected, flag: false }
+    }
+    return { ...preState, flag: false }
+  }
   shouldComponentUpdate (nextProps, nextState) {
-    const { flash } = nextProps
-    return true
+    if (nextProps.flash === null) {
+      return true
+    }
+    if (nextProps.flash && (nextState.flag || nextState.isModalVisible)) {
+      return true
+    }
+    return false;
   }
 
   countId = 0
@@ -93,27 +89,24 @@ class DaySteam extends Component {
   renderList = () => {
     let keyArr = Object.keys(this.state.list)
     if (keyArr.length === 0) {
-      return (
-        <div className={style.row} style={{ cursor: 'default' }} onClick={(e) => { return e.stopPropagation() }}>
-          <div style={{ marginLeft: '45%' }}>
-            <span>{'暂无数据'}</span>
-          </div>
-        </div>
-      )
+      return null
     }
-    const { id, category, account, pay, count } = this.state.list
     return (
-      <div className={style.row} key={random(1, 10000, false)} data-key={id} >
-        <div style={{ marginLeft: id ? '0' : '45%' }}>
-          <span>{category ? category.split('>')[0] : '暂无数据'}</span>
-          <span>{account}</span>
-        </div>
-        <div style={{ color: !pay ? '#e17167' : '#56b78c', display: id ? 'block' : 'none' }}>￥{count}</div>
-        <div style={{ position: 'absolute', right: '25px', paddingTop: '14px', width: '20px', height: '20px' }} onClick={this.deleteCount}>
-          <DeleteOutlined />
-        </div>
-      </div>
-    )
+      keyArr.map(item => {
+        const { id, category, account, pay, count } = this.state.list[item]
+        return (
+          <div className={style.row} key={random(1, 10000, false)} data-key={id} >
+            <div style={{ marginLeft: id ? '0' : '45%' }}>
+              <span>{category ? category.split('>')[0] : '暂无数据123'}</span>
+              <span>{account}</span>
+            </div>
+            <div style={{ color: !pay ? '#e17167' : '#56b78c', display: id ? 'block' : 'none' }}>￥{count}</div>
+            <div style={{ position: 'absolute', right: '25px', paddingTop: '14px', width: '20px', height: '20px' }} onClick={this.deleteCount}>
+              <DeleteOutlined />
+            </div>
+          </div>
+        )
+      }))
   }
   // 查看、修改具体账单
   editCount = (e) => {
@@ -136,14 +129,11 @@ class DaySteam extends Component {
   }
   // 关闭抽屉
   onClose = (e) => {
-    // this.setState({ ...this.state, visible: false, rnm: random(1, 10, true) })
-    this.visible = false
+    this.setState({ ...this.state, visible: false })
   }
   // 打开抽屉
   onOpen = (e) => {
-    // this.setState({ ...this.state, visible: true, flag: true })
-    this.visible = true
-    this.forceUpdate()
+    this.setState({ ...this.state, visible: true })
   }
   // 抽屉头部区域
   title = () => {
@@ -173,14 +163,14 @@ class DaySteam extends Component {
           placement="right"
           closable={false}
           onClose={this.onClose}
-          visible={this.visible}
+          visible={this.state.visible}
           width={'700px'}
           headerStyle={{ margin: 0, padding: 0 }}
           className={style.drawerBody}
           destroyOnClose={true}
         >
           <div style={{ paddingTop: '80px', width: '700px', transform: 'translateX(0)', overflow: 'auto', height: '100%' }}>
-            <Pay pay={this.state.selected.length ? this.state.selected[0].pay : true} count={[this.state.selected]}></Pay>
+            <Pay pay={this.state.selected.length ? this.state.selected[0].pay : true} count={this.state.selected}></Pay>
           </div>
         </Drawer>
         {/* 删除弹窗 */}
@@ -201,4 +191,4 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   { getCountData, deleteCount }
-)(DaySteam);
+)(withRouter(DaySteam));

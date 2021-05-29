@@ -14,7 +14,7 @@ class index extends React.Component {
     getOFS(JSON.parse(localStorage.getItem('allCount')) || [])
     super(props)
     this.state = {
-      list: queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { date: [this.props.timeSeg.start, this.props.timeSeg.end] } } }),
+      list: queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { account: this.props.type, date: [this.props.timeSeg.start, this.props.timeSeg.end] } } }),
       end: this.props.timeSeg.end,
       start: this.props.timeSeg.start,
       // 刷新判断，这个是被修改的账单，关键信息是id，修改过后id将会变化，一个变化了的账单传入，就要刷新页面
@@ -22,8 +22,10 @@ class index extends React.Component {
         id: void (0)
       },
       // 辅助判断标识
-      flag: false
+      flag: false,
+      type: this.props.type
     }
+    this.type = this.props.type
     this.sumCount = {
       sum: 0,
       income: 0,
@@ -86,22 +88,18 @@ class index extends React.Component {
       })
       this.sumCount.sum = this.sumCount.income - this.sumCount.pay
       if (!list.length) {
-        return (<Panel header={this.renderHead(list, item, index)} key={randomNum(100, 10000, true)} showArrow={false} >
-          <div style={{ paddingTop: '20px', marginLeft: '45%', height: '70px', alignItems: 'center', fontSize: '18px', borderBottom: '1px solid #efefef' }}>
-            <span>{'暂无数据'}</span>
-          </div>
-        </Panel>)
+        return null
       }
       return (
         <Panel header={this.renderHead(list, item, index)} key={this.keys[index]} showArrow={false} >
-          <Month week={false} timeSeg={item} ></Month>
+          <Month week={false} timeSeg={item} type={this.type} ></Month>
         </Panel>
       )
     })
   }
   // 查询每月的数据
   queryMonth = (obj) => {
-    let list = queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { date: [obj.start, obj.end] } } })
+    let list = queryCountData('', { type: 'getCountData', data: { list: 'all', demand: { account: this.state.type, date: [obj.start, obj.end] } } })
     return list
   }
 
@@ -128,13 +126,14 @@ class index extends React.Component {
       }, compute)
     }
     compute.sum = compute.income - compute.pay
+    console.log(compute);
     return (
       <div className={style.collapsHead}>
         <div style={{ width: '120px', display: 'flex', justifyContent: 'center', height: '60px', paddingTop: '10px' }}>
           <div >
             <div>
               <span style={{ fontSize: '25px', color: 'black', fontWeight: 600 }}>{this.timeSeg.length - index}</span>
-              <span style={{ fontSize: '10px', color: '#787979' }}>月</span>
+              <span style={{ fontSize: '10px', color: '#787979' }}>/{new Date(item.start).getFullYear()}</span>
             </div>
             <div style={{ marginTop: '-10px', fontSize: '10px', color: '#787979' }}>{`${month}.1-${month}.${dayEnd}`}</div>
           </div>

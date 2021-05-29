@@ -17,7 +17,7 @@ import Month from './monthStream';
 class Stream extends Component {
   constructor(props) {
     super(props)
-    this.type = this.props.location.params.type
+    this.type = this.props.history.location.params.type
     this.balance = JSON.parse(localStorage.getItem('balance')) || 0
     this.bal = this.props.ofs.monthRevenue.pay
     this.now = new Date().getTime()
