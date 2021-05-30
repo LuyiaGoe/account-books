@@ -141,7 +141,6 @@ function Index (props) {
           <Link className={style.betweenText} to='/home/setBalance' onClick={drawerOut}><span >预算额度：</span><span >￥{(balance - (list.monthRevenue.pay ? list.monthRevenue.pay.replace(/,/g, '') : 0)).numberFormat(2)}<RightOutlined className={style.icon} /></span></Link>
         </Col>
       </Col>
-
     )
   }
   // 按时间进入流水页面Stream
@@ -164,16 +163,15 @@ function Index (props) {
       case 'year':
         start = new Date(year, 0, 1) - 0
         break
+      default:
+        break
     }
     setData({ ...data, visible: true })
     history.push({ pathname: '/home/stream', params: { type: value, start, end: end.getTime() } })
   }
   // 跳转入资产页面Asset
   const assetsPage = (value) => {
-    // 试验用
     let end = new Date(),
-      date = end.getDate(),
-      month = end.getMonth(),
       year = end.getFullYear(),
       start = 0
     switch (value) {
@@ -196,6 +194,8 @@ function Index (props) {
       case 'weChat':
         start = new Date(year, 0, 1) - 0
         value = '微信'
+        break
+      default:
         break
     }
     setData({ ...data, visible: true })

@@ -269,7 +269,7 @@ function Index (props) {
   return (
     <div className={style.container}>
       <div style={{ borderBottom: '1px solid rgb(248,248,248)', overflow: 'hidden', backgroundColor: 'rgb(248,248,248)', cursor: 'pointer' }} onClick={openCalcu}>
-        <span className={style.count} style={{ color: props.pay ? 'green' : 'red' }}>￥{state.count}</span>
+        <span className={style.count} style={{ color: props.pay ? 'green' : 'red' }}>￥{(state.count * 1).numberFormat(2)}</span>
       </div>
       {/* 下拉菜单区域 */}
       {collapseList()}

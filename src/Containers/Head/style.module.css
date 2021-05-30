@@ -1,6 +1,16 @@
 .main{
   background-color: rgb(250,211,71);
   height: 80px;
-  width: 100%;
+  width:100%;
+  position: fixed;
+  transform: translateX(0);
   /* padding: 50px 50px 5px; */
+}
+
+.title{
+  text-align: center;
+  line-height: 80px;
+  font-weight: 550;
+  font-size: 25px;
+  color: #a96c37;
 }

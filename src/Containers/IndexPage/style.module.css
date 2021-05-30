@@ -46,6 +46,9 @@
   float: right;
   zoom: 1;
   padding: 5px 0!important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* 清除浮动 */
 .payCountSum::after{

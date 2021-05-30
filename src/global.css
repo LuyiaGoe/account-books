@@ -48,3 +48,19 @@
 .balanceA .ant-progress-inner{
   margin: -25px 0 -5px 0!important;
 }
+
+#root{
+  min-width: 1000px!important;
+}
+
+ .ant-popover-inner-content{
+  padding: 0!important;
+  background-color: rgb(248,248,248);
+  border-radius:0 0 15px 15px;
+}
+.ant-popover-inner{
+  border-radius: 15px;
+}
+.pop .ant-card-body{
+  padding: 12px;
+}

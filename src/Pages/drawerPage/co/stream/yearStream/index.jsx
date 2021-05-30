@@ -126,7 +126,6 @@ class index extends React.Component {
       }, compute)
     }
     compute.sum = compute.income - compute.pay
-    console.log(compute);
     return (
       <div className={style.collapsHead}>
         <div style={{ width: '120px', display: 'flex', justifyContent: 'center', height: '60px', paddingTop: '10px' }}>
