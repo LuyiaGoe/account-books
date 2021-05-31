@@ -1,5 +1,5 @@
 .container{
-  display: block;
+  display: inline-block;
   position: absolute;
   left: 50px;
   top: 0;

@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef, useContext } from 'react'
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux'
 import style from './style.module.css'
 import Cascader from '../Cascader/Cascader';
 import Calculator from '../../Calculator';
-import { Collapse, Calendar, Button, Drawer, notification } from 'antd';
+import { Collapse, Calendar, Button, Drawer, notification, Switch } from 'antd';
 import globalContext from '../../../globalContext';
 // 这是 redux 的 action，此处依序引入的是：保存当前账单、作为模板保存
 import { saveCount, saveAsTemp, editCount } from '../../../redux/actions/saveCount';
@@ -48,10 +49,12 @@ let initialState = {
   member: '(无成员)',
   tempVisible: false,
   calcuVisible: false,
-  count: 0
+  count: 0,
+  continuous: true
 }
 
 function Index (props) {
+  const history = useHistory()
   let Consumer = useContext(globalContext)
   let [state, setState] = useState(initialState)
   // 传送数据用的对象：
@@ -65,8 +68,11 @@ function Index (props) {
     remark: ''
   }
   useEffect(() => {
-    if (props.count && props.count[0].id) {
+    if (props.count && props.count[0] && props.count[0].id) {
       setState({ ...props.count[0] })
+    }
+    if (props.continuous === true || props.continuous === false) {
+      setState({ ...state, continuous: props.continuous })
     }
   }, [props])
   // 接收到级联传来的支出分类
@@ -209,6 +215,11 @@ function Index (props) {
       } else {
         props.saveCount(info)
       }
+      if (state.continuous) {
+        return null
+      } else {
+        return history.push('/home')
+      }
     }
   }
   // 保存为模板
@@ -278,7 +289,7 @@ function Index (props) {
       </div>
       <div className={style.bottonContainer}>
         <Button type='danger' className={style.conserveButoon} onClick={conserve}>保存</Button>
-        <Button type='danger' className={style.conserveAsTempButoon} style={{ display: state.id ? 'none' : 'block' }} onClick={conserveAsTemp}>保存为模板</Button>
+        <Button type='danger' className={style.conserveAsTempButoon} style={{ display: state.id && state.id !== 20210531 ? 'none' : 'block' }} onClick={conserveAsTemp}>保存为模板</Button>
       </div>
       {/* 模板抽屉区域 */}
       <Drawer

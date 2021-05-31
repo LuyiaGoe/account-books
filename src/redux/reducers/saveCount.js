@@ -1,4 +1,5 @@
 import { SAVECOUNT, EDITCOUNT, SAVEASTEMP, DELETECOUNT } from '../constant'
+import { message } from 'antd'
 import randomNum from 'number-random'
 // 数据格式如下
 // data = {
@@ -23,6 +24,7 @@ export default function saveCountReducer (preState, action) {
         allCount = [...allCount, data]                               // 有则加入旧数组
         localStorage.setItem('allCount', JSON.stringify(allCount))
       }
+      message.success('保存账单成功', 0.4)
       return null
     case SAVEASTEMP:
       let allTemp = JSON.parse(localStorage.getItem('allTemp')) // 获取本地存储的账单
@@ -32,6 +34,7 @@ export default function saveCountReducer (preState, action) {
         allTemp = [...allTemp, data]                               // 有则加入旧数组
         localStorage.setItem('allTemp', JSON.stringify(allTemp))
       }
+      message.success('保存模板成功', 0.4)
       return null
     case EDITCOUNT:
       let editCount = {}
@@ -43,6 +46,7 @@ export default function saveCountReducer (preState, action) {
         return item
       })]
       localStorage.setItem('allCount', JSON.stringify(target))
+      message.success('修改成功', 0.4)
       return editCount
     case DELETECOUNT:
       let deleteCount = {}

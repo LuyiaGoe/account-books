@@ -11,6 +11,8 @@ function Index (props) {
   let [state, setState] = useState({ ...props.obj, 'selectedLeft': 0, 'selectedRight': 0 })
   let rightCol = useRef(null)
   let leftCol = useRef(null)
+  let all = []
+  let arr = Array(2), arrr = Array(2)
   useEffect(() => {
     let output = []
     output[0] = arr[state.selectedLeft + 2]
@@ -18,8 +20,6 @@ function Index (props) {
     props.change(output)
   }, [state.selectedLeft, state.selectedRight])
   // 用于渲染级联选择器中的选项
-  let all = []
-  let arr = Array(2), arrr = Array(2)
   for (let i in state) {
     all.push(i)
   }

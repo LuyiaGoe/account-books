@@ -4,7 +4,7 @@ import style from './style.module.css'
 export default function Index (props) {
   const { children } = props
   const title = () => {
-    if (props.children) return props.children
+    if (children) return children
     return null
   }
   return (

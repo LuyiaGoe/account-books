@@ -87,7 +87,7 @@ class index extends React.Component {
       this.sumCount.sum = this.sumCount.income - this.sumCount.pay
       if (!list.length) {
         return (<Panel header={this.renderHead(list, item, index)} key={randomNum(100, 10000, true)} showArrow={false} >
-          <div style={{ paddingTop: '20px', marginLeft: '45%', height: '70px', alignItems: 'center', fontSize: '18px', borderBottom: '1px solid #efefef' }}>
+          <div onClick={(e) => { e.stopPropagation() }} style={{ paddingTop: '20px', marginLeft: '45%', height: '70px', alignItems: 'center', fontSize: '18px', borderBottom: '1px solid #efefef' }}>
             <span>{'暂无数据'}</span>
           </div>
         </Panel>)

@@ -5,7 +5,6 @@ import getOFS from './oFS'
 // d小数点位置的符号,可以正常地设置为'.',也可以自定义
 // t千分位符号
 const initState = {
-  todayArr: [],
   // 今天列表
   todayArr: [],
   // 本周列表
@@ -84,10 +83,9 @@ export default function numberFormat (pre = initState, action) {
           return obj
         }
       }
+      let clone = {}
       if (Array.isArray(obj)) {
-        var clone = []
-      } else {
-        var clone = {}
+        clone = []
       }
       for (let key in obj) {
         if (key.indexOf('Asset') >= 0 || key === 'pay' || key === 'income' || key === 'count') {

@@ -63,8 +63,16 @@
   + 单纯用于传值和传递动画函数（Pay页面和IndexPage页面），不用`action reducer`修改的值
   + 设置了全局context，在`src`中生成了一个`globalContext`文件
   + 
-2. `redux`传值：
-  + 用于查询、保存、修改用
+2. `react-redux`传值：
+  + 用于创建、保存、编辑、删除、查询、分类、排名等用
+  + 文件分为store、constant、actions、reducers
+  + constant最简单，用于存名，标记每个名作用是干什么
+  + store用于分发组件的actions到reducers进行处理，以及将处理完的数据返还给组件
+  + actions分为type和data，每一次dispatch都要传递一个type（告诉store交给哪个reducer处理）和一个data（处理啥数据）
+  + 所有的reducers都会收到store的分发，但是它们会根据type决定是不是自己需要处理的数据，不是则返回上一次处理的数据（preState）或干脆返回一个null
+  + reducers必须返回一个值
+  + 组件分为容器组件和UI组件，容器组件从actions拿到操作方法，负责和store交互，包括操作数据、传收值，再将数据传给UI组件
+  + 在根组件用Provider包裹，并传入store
 
 ## 思考
 1. 项目色调为橘色和暗黄色

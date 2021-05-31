@@ -35,7 +35,6 @@ class DaySteam extends Component {
   static getDerivedStateFromProps (nextProps, preState) {
     const { list } = nextProps
     if (list.id !== preState.list.id) return { ...preState, flag: false, list: list, visible: false }
-    console.log(2);
     return { ...preState, flag: false, list: nextProps.list }
   }
   countId = 0
@@ -65,14 +64,11 @@ class DaySteam extends Component {
   renderList = () => {
     const { id, category, pay, count } = this.props.list
     return (
-      <div className={style.row} key={random(1, 10000, false)} data-key={id} >
+      <div className={style.row} key={random(1, 10000, false)} data-key={id} style={{ cursor: 'default' }} onClick={(e) => { e.stopPropagation() }}>
         <div style={{ marginLeft: id ? '0' : '45%' }}>
-          <span>{category ? category.split('>')[0] : '暂无数据123'}</span>
+          <span>{category ? category.split('>')[0] : '暂无数据'}</span>
         </div>
         <div style={{ color: !pay ? '#e17167' : '#56b78c', display: id ? 'block' : 'none' }}>￥{count}</div>
-        <div style={{ position: 'absolute', right: '25px', marginTop: '-10px', width: '20px', height: '20px' }} onClick={this.deleteCount}>
-          <DeleteOutlined />
-        </div>
       </div>
     )
   }

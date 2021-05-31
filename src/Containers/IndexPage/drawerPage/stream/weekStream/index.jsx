@@ -108,7 +108,7 @@ class index extends Component {
     return (
       <div className={style.container} >
         {this.splitAsDay()}
-        <div style={{ display: this.props.week ? 'flex' : 'none', marginLeft: '45%', height: '70px', alignItems: 'center', fontSize: '18px', borderBottom: '1px solid #efefef' }}>
+        <div onClick={(e) => { e.stopPropagation() }} style={{ display: this.props.week ? 'flex' : 'none', marginLeft: '45%', height: '70px', alignItems: 'center', fontSize: '18px', borderBottom: '1px solid #efefef' }}>
           <span>暂无数据</span>
         </div>
       </div>

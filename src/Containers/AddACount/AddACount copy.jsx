@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import style from './style.module.css'
 import Pay from './Pay/Pay';
 import Tag from './tag'
 import globalContext from '../../globalContext'
 
-import { Tabs, Drawer, Row, Col, Card, Switch } from 'antd';
+import { Tabs, Drawer, Row, Col, Card, Button, Collapse } from 'antd';
 import { RightOutlined, EditOutlined } from '@ant-design/icons';
+const { Panel } = Collapse;
 
 const Provider = globalContext.Provider;
 
@@ -16,7 +17,7 @@ const { TabPane } = Tabs;
 
 function Index () {
   const mainRef = useRef(null)
-  const [state, setState] = useState({ visible: false, pay: true, paylist: [{ id: 0 }], incomelist: [{ id: 0 }], edit: false, continuous: true })
+  const [state, setState] = useState({ visible: false, pay: true, paylist: [{ id: 0 }], paylist: [{ id: 0 }], edit: false, tempVisible: false })
   let classn = style.handleHead
   useEffect(() => {
   }, [])
@@ -39,7 +40,7 @@ function Index () {
   }
   // 关闭模板页面
   const onClose = () => {
-    setState({ ...state, visible: false, edit: false })
+    setState({ ...state, visible: false })
   }
   // 打开模板
   const onOpen = () => {
@@ -60,7 +61,6 @@ function Index () {
     if (count) {
       tempList.map(item => {
         if (item.pay === state.pay) { flag = true }
-        return null
       })
     }
     if (!flag) {
@@ -84,8 +84,8 @@ function Index () {
                   <div style={{ color: state.pay ? '#56b78c' : '#e7918a' }}>￥{item.count}</div>
                 </div>
               </div>
-              <div style={{ display: !state.edit ? 'none' : 'block' }} onClick={() => { deleteTemp(item) }} className={style.deleteTemp}>--</div>
-              <div className={style.detail} onClick={() => { selectTemp(item) }}><RightOutlined /></div>
+              <div style={{ display: !state.edit ? 'none' : 'block' }} className={style.deleteTemp}>--</div>
+              <div style={{ display: !state.edit ? 'none' : 'flex' }} className={style.detail} onClick={() => { tempDetail(item) }}><RightOutlined /></div>
             </Card>
           </Col>
         )
@@ -97,16 +97,9 @@ function Index () {
       </Row>
     )
   }
-  // 删除模板
-  const deleteTemp = ({ id }) => {
-    let tempList = JSON.parse(localStorage.getItem('allTemp'))
-    tempList = tempList.filter(item => {
-      return item.id !== id
-    })
-    localStorage.setItem('allTemp', JSON.stringify(tempList))
-    setState({ ...state })
+  // 模板详细
+  const tempDetail = (item) => {
   }
-
   // 选中模板
   const selectTemp = (item) => {
     let selected = item
@@ -117,10 +110,49 @@ function Index () {
       setState({ ...state, visible: false, incomelist: selected })
     }
   }
-  // 模式切换
-  const switchButton = (value) => {
-    setState({ ...state, continuous: value })
+  // 复制起始
+  // 编辑模板抽屉title
+  const title = () => {
+    return (
+      <div className={style.temphead}>
+        <span style={{ fontSize: '25px', fontWeight: 700, lineHeight: '46px' }}>{'编辑模板'}</span>
+        <Button type="text" onClick={onCloseTemp} danger style={{ position: 'absolute', right: '10px', fontSize: '20px', color: 'brown' }}>
+          关闭
+        </Button>
+      </div>
+    )
   }
+  // 关闭模板编辑区域
+  const onCloseTemp = () => {
+    setState({ ...state, tempVisible: false })
+  }
+  // 模板名称键入事件
+  let tempInputRef = useRef(null)
+  const tempKeyDown = (e) => {
+    if (e.keyCode === 13) { conserveTemp() }
+  }
+  // 下拉区域
+  const collapseList = () => {
+    return (
+      <Collapse accordion>
+        <Panel header={classification()} key={'paycat'} showArrow={false} style={{ padding: '12px 30px 12px 0' }}>
+          <Cascader obj={props.pay ? payCat : incomeCat} change={receivePayCat}></Cascader>
+        </Panel>
+        <Panel header={account()} key={'account'} showArrow={false} style={{ padding: '12px 30px 12px 0' }}>
+          <Cascader obj={AccountCat} change={receiveAccountCat}></Cascader>
+        </Panel>
+        <Panel header={date()} key={'datecat'} showArrow={false} style={{ padding: '12px 30px 12px 0' }}>
+          <div className={style.site_calendar_demo_card}>
+            <Calendar fullscreen={false} onChange={onPanelChange} ></Calendar>
+          </div>
+        </Panel>
+        <Panel header={number()} key={'numbercat'} showArrow={false} style={{ padding: '12px 30px 12px 0' }}>
+          <Cascader obj={numberCat} change={receiveNumberCat}></Cascader>
+        </Panel>
+      </Collapse>
+    )
+  }
+  // 复制结束
   return (
     <Provider value={mainAnimation}>
       <div ref={mainRef} className={style.handleHead}>
@@ -129,15 +161,14 @@ function Index () {
           <div onClick={onOpen}><Tag></Tag></div>
           <span style={{ fontSize: '25px', fontWeight: 700 }}>记账</span>
         </div>
-        <div className={style.model}><Switch checkedChildren="连续" unCheckedChildren="跳转" onChange={value => { switchButton(value) }} defaultChecked></Switch></div>
         <div className={style.container}>
           {/* Tabs栏 */}
           <Tabs defaultActiveKey="payout" centered animated style={{ paddingTop: '80px', backgroundColor: 'rgb(248,248,248)' }}>
             <TabPane tab={<span onClick={() => { setState({ ...state, pay: true }) }} style={{ fontWeight: 400, fontSize: '20px' }}>支出</span>} key="payout">
-              <Pay pay={true} continuous={state.continuous} count={[state.paylist]}></Pay>
+              <Pay pay={true} count={[state.paylist]}></Pay>
             </TabPane>
             <TabPane tab={<span onClick={() => { setState({ ...state, pay: false }) }} style={{ fontWeight: 400, fontSize: '20px' }}>收入</span>} key="income">
-              <Pay pay={false} continuous={state.continuous} count={[state.incomelist]}></Pay>
+              <Pay pay={false} count={[state.incomelist]}></Pay>
             </TabPane>
           </Tabs>
         </div>
@@ -155,11 +186,30 @@ function Index () {
         <div className={style.drawerBody}>
           <span
             onClick={() => { setState({ ...state, edit: !state.edit }) }}
-            className={style.tempEdit}>
-            <EditOutlined /> {!state.edit ? '删除' : '完成'}
+            style={{ border: '1px solid #9fa4aa', width: '60px', paddingLeft: '10px', display: 'inline-block', borderRadius: '5px', marginBottom: '5px', cursor: 'pointer' }}>
+            <EditOutlined />{!state.edit ? '编辑' : '完成'}
           </span>
           {display()}
         </div>
+      </Drawer>
+      {/* 模板编辑区域 */}
+      <Drawer
+        title={title()}
+        placement="right"
+        closable={false}
+        onClose={onCloseTemp}
+        visible={state.tempVisible}
+        width={'700px'}
+        headerStyle={{ margin: 0, padding: 0 }}
+        className={style.drawerBodyTemp}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <h1 style={{ paddingLeft: '60px', paddingTop: '25px', color: 'gray', whiteSpace: 'nowrap' }}>模板名称</h1>
+          <input className={style.remark} ref={tempInputRef} onKeyDown={tempKeyDown} style={{ textAlign: 'right', marginRight: '20px' }} placeholder='请输入模板名' type="text" />
+        </div>
+        {/* 改到这里了 */}
+        {collapseList()}
+        <Button type='danger' className={style.drawerButoon} onClick={conserveTemp}>保存</Button>
       </Drawer>
     </Provider>
   )
