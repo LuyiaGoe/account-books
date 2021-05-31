@@ -64,7 +64,6 @@ class index extends Component {
     return { ...ps }
   }
   shouldComponentUpdate (np, ns) {
-    // if (!np.flash) return false
     this.list = getData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { ...this.obj } } })
     return true
   }

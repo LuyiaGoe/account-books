@@ -35,6 +35,7 @@ class DaySteam extends Component {
   static getDerivedStateFromProps (nextProps, preState) {
     const { list } = nextProps
     if (list.id !== preState.list.id) return { ...preState, flag: false, list: list, visible: false }
+    console.log(2);
     return { ...preState, flag: false, list: nextProps.list }
   }
   countId = 0
