@@ -32,8 +32,8 @@ function Index () {
     mainOut,
     mainIn
   }
+  const [items, setData] = useState('/home')
   // 拿到history
-  const [items, setData] = useState('/')
   const history = useHistory()
   // 副作用函数获得location信息
   useEffect(() => {
