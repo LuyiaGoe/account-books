@@ -92,12 +92,16 @@ class DaySteam extends Component {
     }
     return (
       keyArr.map(item => {
-        const { id, category, account } = this.state.list[item]
+        const { id, category, account, pay, count } = this.state.list[item]
         return (
-          <div className={style.row} key={random(1, 10000, false)} data-key={id} onClick={(e) => { e.stopPropagation() }}>
+          <div className={style.row} key={random(1, 10000, false)} data-key={id} >
             <div style={{ marginLeft: id ? '0' : '45%' }}>
               <span>{category ? category.split('>')[0] : '暂无数据'}</span>
               <span>{account}</span>
+            </div>
+            <div style={{ color: !pay ? '#e17167' : '#56b78c', display: id ? 'block' : 'none' }}>￥{count}</div>
+            <div style={{ position: 'absolute', right: '25px', paddingTop: '14px', width: '20px', height: '20px' }} onClick={this.deleteCount}>
+              <DeleteOutlined />
             </div>
           </div>
         )

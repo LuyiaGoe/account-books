@@ -30,7 +30,7 @@ const Index = (props) => {
         let arr = item.split('.')
         return (
           <div key={`${arr[0]}年${arr[1]}月${arr[2]}日`}>
-            <div className={style.head}>
+            <div className={style.head} style={{ display: obj[`${arr[0]}.${arr[1]}.${arr[2]}`][0].id ? 'flex' : 'none' }}>
               <div style={{ display: year === arr[0] * 1 ? 'none' : 'block', marginRight: '20px' }}>{arr[0]}年</div>
               <div style={{ marginRight: '20px' }}>{`${arr[1] * 1 + 1}月${arr[2]}日`}</div>
               <div style={{ marginRight: '20px' }}>{day[new Date(arr[0], arr[1], arr[2]).getDay()]}</div>

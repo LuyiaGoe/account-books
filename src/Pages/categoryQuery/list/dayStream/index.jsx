@@ -63,15 +63,23 @@ class DaySteam extends Component {
   // 渲染this.state.list每条数据
   renderList = () => {
     const { id, category, pay, count } = this.props.list
+    // 判断查询为空时，点击不生效
+    const judge = (e) => {
+      if (!category) { e.stopPropagation() }
+    }
     return (
-      <div className={style.row} key={random(1, 10000, false)} data-key={id} style={{ cursor: 'default' }} onClick={(e) => { e.stopPropagation() }}>
+      <div className={style.row} key={random(1, 10000, false)} data-key={id} style={{ cursor: category ? 'pointer' : 'default' }} onClick={e => { judge(e) }}>
         <div style={{ marginLeft: id ? '0' : '45%' }}>
           <span>{category ? category.split('>')[0] : '暂无数据'}</span>
         </div>
         <div style={{ color: !pay ? '#e17167' : '#56b78c', display: id ? 'block' : 'none' }}>￥{count}</div>
+        <div style={{ position: 'absolute', right: '25px', marginTop: '-10px', width: '20px', height: '20px', display: category ? 'block' : 'none' }} onClick={this.deleteCount}>
+          <DeleteOutlined />
+        </div>
       </div>
     )
   }
+
   // 查看、修改具体账单
   editCount = (e) => {
     if (e.target.className === 'ant-modal-footer' || e.target.className === 'ant-modal-title' || e.target.className === 'ant-modal-body' || e.target.innerHTML === '确定进行删除？') {
