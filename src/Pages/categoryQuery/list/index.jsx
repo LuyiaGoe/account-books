@@ -25,6 +25,7 @@ const Index = (props) => {
   }
   const display = () => {
     classify()
+    console.log('obj', obj);
     return (
       keys.map(item => {
         let arr = item.split('.')

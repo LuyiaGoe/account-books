@@ -55,6 +55,7 @@ class index extends Component {
     this.state = { ...init, query: false, list: [] }
     this.list = []
     this.obj = { category: this.state.category, account: this.state.account, member: this.state.member, date: [this.state.start, this.state.end] }
+    this.allCount = JSON.parse(localStorage.getItem('allCount'))
   }
   static getDerivedStateFromProps (np, ps) {
     const { countData } = np
@@ -64,7 +65,11 @@ class index extends Component {
     return { ...ps }
   }
   shouldComponentUpdate (np, ns) {
-    // this.list = getData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { ...this.obj } } })
+    this.allCount = JSON.parse(localStorage.getItem('allCount'))
+    if (this.allCount) {
+      console.log(1);
+      this.list = getData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { ...this.obj } } })
+    }
     return true
   }
   // 弹出框头部

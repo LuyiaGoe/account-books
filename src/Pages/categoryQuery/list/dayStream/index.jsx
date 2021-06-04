@@ -33,8 +33,14 @@ class DaySteam extends Component {
   }
 
   static getDerivedStateFromProps (nextProps, preState) {
-    const { list } = nextProps
-    if (list.id !== preState.list.id) return { ...preState, flag: false, list: list, visible: false }
+    const { list, flash } = nextProps
+    console.log(flash);
+    if (list.id !== preState.list.id) {
+      console.log(1);
+      return { ...preState, flag: false, list: list, visible: false }
+    }
+    if (flash?.id) return { ...preState, flag: false, list: list, visible: false }
+    console.log(preState.visible);
     return { ...preState, flag: false, list: nextProps.list }
   }
   countId = 0

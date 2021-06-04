@@ -215,7 +215,8 @@ function Index (props) {
       } else {
         props.saveCount(info)
       }
-      if (state.continuous) {
+      if (!state.continuous) {
+        setState(initialState)
         return null
       } else {
         return history.push('/home')

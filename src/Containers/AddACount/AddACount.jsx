@@ -129,7 +129,7 @@ function Index () {
           <div onClick={onOpen}><Tag></Tag></div>
           <span style={{ fontSize: '25px', fontWeight: 700 }}>记账</span>
         </div>
-        <div className={style.model}><Switch checkedChildren="连续" unCheckedChildren="跳转" onChange={value => { switchButton(value) }} defaultChecked></Switch></div>
+        <div className={style.model}><Switch checkedChildren="跳转" unCheckedChildren="连续" onChange={value => { switchButton(value) }} defaultChecked></Switch></div>
         <div className={style.container}>
           {/* Tabs栏 */}
           <Tabs defaultActiveKey="payout" centered animated style={{ paddingTop: '80px', backgroundColor: 'rgb(248,248,248)' }}>
