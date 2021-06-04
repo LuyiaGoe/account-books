@@ -64,7 +64,7 @@ class index extends Component {
     return { ...ps }
   }
   shouldComponentUpdate (np, ns) {
-    this.list = getData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { ...this.obj } } })
+    // this.list = getData('getCountData', { type: 'getCountData', data: { list: 'all', demand: { ...this.obj } } })
     return true
   }
   // 弹出框头部
